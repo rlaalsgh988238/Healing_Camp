@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <TextView
+        <!--리스트에 잘 들어갔는지 확인하는 버튼(원 목적은 타이틀)-->
+        <Button
+            android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="힐링캠프"
@@ -39,18 +41,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/layoutWritePlaner"
+            android:id="@+id/layoutPlannerContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/buttonOnClickWritePlaner"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/round_box"
-                android:layout_margin="10dp"/>
 
 
         </LinearLayout>
