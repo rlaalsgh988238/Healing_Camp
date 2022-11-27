@@ -28,7 +28,7 @@ import javax.net.ssl.X509TrustManager;
 public class MainActivity extends AppCompatActivity {
     public String url_string;
     String http, numOfRows,pageNo,MobileOS,MobileApp,serviceKey,keyword;
-    String [][] result = new String[10][23];//xml결과 저장
+    String [][] result = new String[10][12];//xml결과 저장
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
                         //태그가 시작
                         case XmlPullParser.START_TAG:
                             tagName=parser.getName();
-
+                            break;
+                        case XmlPullParser.END_TAG:
+                            tagName=parser.getName();
+                            break;
                         case XmlPullParser.TEXT:
                             switch(tagName) {
                                 case "":
@@ -127,35 +130,38 @@ public class MainActivity extends AppCompatActivity {
                                 case "animalCmgCl": //반려동물,j=9
                                 case "firstImageUrl": //캠핑장 이미지,j=10
                                 {
-                                    if(parser.getText()==null||parser.getText()==""){
+                                    if(parser.getText().contains("\n")){
                                         break;
                                     }else{
                                         result[i][j]=parser.getText(); // result배열에 값 저장
-
                                         j++;
                                         break;
                                     }
 
                                 }
-                                }
+                            }
                             break;
                     }
-                    if(j==22){
+                    if(j==11){
                         j=0;
                         i++;
                     }
                     eventType = parser.next();//다음으로 이동
                 }
-                for(int a=0; a<11;a++){
-                    int jew=a*2;
-                    System.out.println(result[0][jew]+" i="+0+" j="+jew/2);
-                    System.out.println(result[1][jew]+" i="+1+" j="+jew/2);
 
-                }
             }catch(XmlPullParserException xppe) {
                 xppe.printStackTrace();
             }catch (IOException ioe){
                 ioe.printStackTrace();
+            }
+            for(int a=0; a<11;a++){
+                System.out.println("첫번째: "+result[0][a]+" i="+0+" j="+a);
+
+            }
+
+            for(int a=0; a<11;a++){
+                System.out.println("두번째: "+result[1][a]+" i="+1+" j="+a);
+
             }
 
 
