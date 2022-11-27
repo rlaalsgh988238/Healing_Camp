@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-        android:id="@+id/buttonOnClickWritePlaner"
+        android:id="@+id/OnClickWritePlaner"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/round_box"
