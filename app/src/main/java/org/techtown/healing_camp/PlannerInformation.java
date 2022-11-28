@@ -11,11 +11,12 @@ import org.w3c.dom.Text;
 public class PlannerInformation {
     String text;
 
-    PlannerInformation(String text) {
+    public PlannerInformation(String text) {
         this.text = text;
     }
     //리턴 함수 모음
+
     public String getText(){
-        return text;
+        return this.text;
     }
 }
