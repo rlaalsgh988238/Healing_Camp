@@ -39,8 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp">
@@ -54,7 +54,7 @@
                 android:orientation="vertical">
             </LinearLayout>
 
-    </ScrollView>
+    </ListView>
 
         <Button
             android:id="@+id/onClickTopScroll"

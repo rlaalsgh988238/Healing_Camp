@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-        android:id="@+id/OnClickWritePlaner"
+        android:id="@+id/onClickWritePlaner"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/round_box"
@@ -29,4 +29,4 @@
 
     </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
