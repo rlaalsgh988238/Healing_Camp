@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/onClickBackLayer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_marginRight="30sp"
+            android:background="#00ff0000"
+            android:drawableLeft="@drawable/back_button2"
+            android:text="뒤로가기"
+            android:textColor="#09C08F"
+            android:fontFamily="@font/applesdgothicneob"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/applesdgothicneom"
+            android:layout_marginLeft="10sp"
+            android:text="메모장"
+            android:textSize="40sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/writeToSearchEdit"
+            android:layout_width="290dp"
+            android:layout_height="40sp"
+            android:layout_margin="10sp"
+            android:layout_gravity="center"
+            android:background="@drawable/round_box_for_search"
+            android:hint="검색어를 입력해 주세요"
+            android:fontFamily="@font/applesdgothicneob"/>
+
+
+        <Button
+            android:id="@+id/onClickSearch"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="검색하기"
+            android:textSize="15sp"
+            android:fontFamily="@font/applesdgothicneob"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <ScrollView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/onClickEditPlanner"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="40sp"
+            android:background="@drawable/write_button"
+            android:elevation="30sp"/>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,10 +1,12 @@
 package org.techtown.healing_camp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     Button onClickTopScroll,onClickWritePlaner;
     ListView listView;
     Integer arrayIndex = 0;
-    Button check;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
         onClickWritePlaner = findViewById(R.id.onClickWritePlaner);
         onClickTopScroll = findViewById(R.id.onClickTopScroll);
         listView = findViewById(R.id.listView);
-        check = findViewById(R.id.check);
 
         plannerList = new ArrayList<PlannerInformation>();
 
         final HealingAdapter healingAdapter = new HealingAdapter(this,plannerList);
-        //애니매이션 생성
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
 
         listView.setAdapter(healingAdapter);
@@ -50,10 +49,37 @@ public class MainActivity extends AppCompatActivity {
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                plannerList.add(new PlannerInformation(arrayIndex.toString()));
+                plannerList.add(0,new PlannerInformation(arrayIndex.toString()));
                 healingAdapter.notifyDataSetChanged();
                 arrayIndex++;
             }
         });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int lastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(lastFirstVisibleItem<firstVisibleItem){
+                    onClickTopScroll.setVisibility(View.VISIBLE);//스크롤 다운
+                }
+                if(firstVisibleItem==0){
+                    onClickTopScroll.setVisibility(View.INVISIBLE);//스크롤 업
+                }
+                lastFirstVisibleItem=firstVisibleItem;
+            }
+        });//스크롤 감지 함수
+
+        onClickTopScroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listView.smoothScrollToPosition(0);
+            }
+        });//버튼클릭 최상단 이동 함수
+
+        }
     }
-}

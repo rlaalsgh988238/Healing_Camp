@@ -13,13 +13,13 @@
         android:gravity="center">
 
         <!--리스트에 잘 들어갔는지 확인하는 버튼(원 목적은 타이틀)-->
-        <Button
-            android:id="@+id/check"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="힐링캠프"
             android:textSize="40dp"
-            android:layout_margin="30dp"/>
+            android:layout_margin="30dp"
+            android:fontFamily="@font/applesdgothicneom"/>
 
         <View
             android:layout_width="0dp"
@@ -39,22 +39,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:divider="#ffffff">
 
 
-    </ListView>
+        </ListView>
 
         <Button
             android:id="@+id/onClickTopScroll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="30dp"
             android:layout_gravity="center|bottom"
-            android:visibility="invisible"/>
+            android:background="@drawable/up_button"
+            android:visibility="visible"/>
+
 
     </FrameLayout>
 

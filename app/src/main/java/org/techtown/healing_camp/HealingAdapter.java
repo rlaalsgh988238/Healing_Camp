@@ -1,6 +1,8 @@
 package org.techtown.healing_camp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,14 +50,17 @@ public class HealingAdapter extends BaseAdapter {
         text.setText(plannerInformation.get(position).getText());
 
         Animation popUpAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_up_animation);
-        view.setAnimation(popUpAnimation);
+        //view.setAnimation(popUpAnimation);
 
         onClickWritePlaner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), InsidePlannerActivity.class);
                 Toast.makeText(context.getApplicationContext(), getItem(position).getText(),Toast.LENGTH_SHORT).show();
+                ((Activity)context).startActivity(intent);
             }
         });
+
 
         return view;
     }
