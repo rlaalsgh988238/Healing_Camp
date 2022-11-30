@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HealingAdapter extends BaseAdapter {
     Context context = null;
@@ -47,7 +49,8 @@ public class HealingAdapter extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.planner_container_layout,parent,false);
         Button onClickWritePlaner = (Button) view.findViewById(R.id.onClickWritePlaner);
         TextView text = (TextView) view.findViewById(R.id.textView);
-        text.setText(plannerInformation.get(position).getText());
+        int index =  Integer.parseInt(plannerInformation.get(position).getText())+1;
+        text.setText(getTime()+"에 작성된\n"+ index +"번째 플레너 입니다.");
 
         Animation popUpAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_up_animation);
         //view.setAnimation(popUpAnimation);
@@ -56,7 +59,7 @@ public class HealingAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context.getApplicationContext(), InsidePlannerActivity.class);
-                Toast.makeText(context.getApplicationContext(), getItem(position).getText(),Toast.LENGTH_SHORT).show();
+                intent.putExtra("index",position);
                 ((Activity)context).startActivity(intent);
             }
         });
@@ -64,6 +67,12 @@ public class HealingAdapter extends BaseAdapter {
 
         return view;
     }
+    private String getTime(){
+        long now = System.currentTimeMillis();
+        Date data = new Date(now);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("MM월 dd일 hh시 mm분");
+        String getTime = timeFormat.format(data);
 
-
+        return getTime;
+    }
 }

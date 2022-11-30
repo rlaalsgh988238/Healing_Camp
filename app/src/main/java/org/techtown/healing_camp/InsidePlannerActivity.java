@@ -7,12 +7,18 @@ import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class InsidePlannerActivity  extends Activity {
+import java.util.ArrayList;
+
+public class InsidePlannerActivity  extends MainActivity {
+    ArrayList<PlannerInformation> plannerInformation;
+
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearchEdit;
+    TextView test1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -24,11 +30,28 @@ public class InsidePlannerActivity  extends Activity {
         onClickBackLayer = findViewById(R.id.onClickBackLayer);
         writeToSearchEdit = findViewById(R.id.writeToSearchEdit);
 
+        test1 = findViewById(R.id.test1);
+        Intent intent = getIntent();
+
+        int position = intent.getExtras().getInt("index");
+
         onClickBackLayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
+        onClickEditPlanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                plannerList.remove(position);
+                listView.setItemChecked(-1,true);
+                onBackPressed();
+            }
+        });
+
+        String index = String.valueOf(position);//@@@@@@@@@@
+        test1.setText(index);//@@@@@@@@@@@@@@@
     }
 }

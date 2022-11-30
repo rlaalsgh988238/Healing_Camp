@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<PlannerInformation> plannerList;
+    public ArrayList<PlannerInformation> plannerList;
 
     ImageButton onClickMakePlanner;
     Button onClickTopScroll,onClickWritePlaner;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         final HealingAdapter healingAdapter = new HealingAdapter(this,plannerList);
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
+        Intent intent = new Intent(this, InsidePlannerActivity.class);
 
         listView.setAdapter(healingAdapter);
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 arrayIndex++;
             }
         });
+
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastFirstVisibleItem;
@@ -80,6 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 listView.smoothScrollToPosition(0);
             }
         });//버튼클릭 최상단 이동 함수
-
         }
+
     }
