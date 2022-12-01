@@ -1,43 +1,38 @@
 package org.techtown.healing_camp;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-
-
 import javax.net.ssl.*;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-
-
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     public String url_string;
     String http, numOfRows,pageNo,MobileOS,MobileApp,serviceKey,keyword;
     String [][] result = new String[10][12];//xml결과 저장
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        // Create a trust manager that does not validate certificate chains
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        // 시험삼아 만들어 본 데이터 베이스
+        LocalDB database = new LocalDB(MainActivity.this,1);
+        database.insert("first",1 , "this is my first try");
+        System.out.println("ddddddddddddddd"+database.getResult());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         http="https://apis.data.go.kr/B551011/GoCamping/searchList?";
         numOfRows="numOfRows=3";
         pageNo="pageNo=1";
@@ -45,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         MobileApp="MobileApp=HealingCamp";
         serviceKey="serviceKey=xb5%2BBJffxQf2twAHBua7UPgM9nhdnmp1GOz79VG7t%2BcCO69MUTn5JYGznC0kZY0jSaB%2F0GIq%2Bueo4dob5rQCuA%3D%3D";
         try {
-            keyword= "keyword="+(URLEncoder.encode("야영장", "UTF-8"));
+            keyword= "keyword="+(URLEncoder.encode("바다", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         };
@@ -54,59 +49,64 @@ public class MainActivity extends AppCompatActivity {
 
         BackgroundThread Back = new BackgroundThread();
         Back.start();
-
-
-
-
     }
 
-    class BackgroundThread extends Thread{ // 파싱하기 위한 백스레드
+    class BackgroundThread extends Thread
+    {
+
+        // 파싱하기 위한 백스레드
         @Override
-        public void run(){
-
-
-            try{
-
+        public void run()
+        {
+            try
+            {
                 // Create a trust manager that does not validate certificate chains
-                TrustManager[] trustAllCerts = new TrustManager[] {
-                        new X509TrustManager() {
-                            public X509Certificate[] getAcceptedIssuers() {
+                TrustManager[] trustAllCerts = new TrustManager[]
+                        {
+                        new X509TrustManager()
+                        {
+
+                            public X509Certificate[] getAcceptedIssuers()
+                            {
                                 return new X509Certificate[0];
                             }
                             public void checkClientTrusted(X509Certificate[] certs, String authType) {}
                             public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-                        }};
+                        }
+                        };
                 // Ignore differences between given hostname and certificate hostname
-                HostnameVerifier hv = new HostnameVerifier() {
+                HostnameVerifier hv = new HostnameVerifier()
+                {
+
                     public boolean verify(String hostname, SSLSession session) { return true; }
                 };
                 // Install the all-trusting trust manager
-                try {
+                try
+                {
+
                     SSLContext sc = SSLContext.getInstance("SSL");
                     sc.init(null, trustAllCerts, new SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                     HttpsURLConnection.setDefaultHostnameVerifier(hv);
                 } catch (Exception e) {}
 
-
                 URL url = new URL(url_string);
                 XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
                 XmlPullParser parser=xmlPullParserFactory.newPullParser();
-                //xmlpullparserFactory를 이용해서 instance를 생성하고
-                // 그 인스턴스를 통해 XmlPullParser 객체인 parser를 생성함
 
                 InputStream IS = url.openStream();
                 InputStreamReader reader=new InputStreamReader(IS,"UTF-8");
                 parser.setInput(reader);
                 String tagName = ""; // xml 태그이름
 
-
                 int i=0;
                 int j=0;//result 배열을 위한 변수
                 int eventType = parser.getEventType();//이벤트 타입(태그종류)를 저장, START_DOCUMENT
 
-                while(eventType!=XmlPullParser.END_DOCUMENT){
-                    switch (eventType) {
+                while(eventType!=XmlPullParser.END_DOCUMENT)
+                {
+                    switch (eventType)
+                    {
                         //태그가 시작
                         case XmlPullParser.START_TAG:
                             tagName=parser.getName();
@@ -115,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
                             tagName=parser.getName();
                             break;
                         case XmlPullParser.TEXT:
-                            switch(tagName) {
+                            switch(tagName)
+                            {
+
                                 case "":
                                     break;
                                 case "facltNm":// 캠핑장 이름,j=0
@@ -130,42 +132,47 @@ public class MainActivity extends AppCompatActivity {
                                 case "animalCmgCl": //반려동물,j=9
                                 case "firstImageUrl": //캠핑장 이미지,j=10
                                 {
-                                    if(parser.getText().contains("\n")){
+                                    if(parser.getText().contains("\n"))
+                                    {
                                         break;
-                                    }else{
+                                    }
+                                    else
+                                    {
                                         result[i][j]=parser.getText(); // result배열에 값 저장
                                         j++;
                                         break;
                                     }
-
                                 }
                             }
                             break;
                     }
-                    if(j==11){
+                    if(j==11)
+                    {
                         j=0;
                         i++;
                     }
                     eventType = parser.next();//다음으로 이동
                 }
+            }
+            catch(XmlPullParserException xppe)
+            {
 
-            }catch(XmlPullParserException xppe) {
                 xppe.printStackTrace();
-            }catch (IOException ioe){
+            }
+            catch (IOException ioe)
+            {
+
                 ioe.printStackTrace();
             }
-            for(int a=0; a<11;a++){
-                System.out.println("첫번째: "+result[0][a]+" i="+0+" j="+a);
 
+            for(int a=0; a<11;a++)
+            {
+                System.out.println("첫번째: "+result[0][a]+" i="+0+" j="+a);
             }
 
             for(int a=0; a<11;a++){
                 System.out.println("두번째: "+result[1][a]+" i="+1+" j="+a);
-
             }
-
-
         }
     }
-
 }
