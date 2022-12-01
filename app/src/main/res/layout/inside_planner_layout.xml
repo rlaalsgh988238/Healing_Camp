@@ -21,12 +21,12 @@
             android:drawableLeft="@drawable/back_button2"
             android:text="뒤로가기"
             android:textColor="#09C08F"
-            android:fontFamily="@font/a"/>
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/d"
+
             android:layout_marginLeft="10sp"
             android:text="메모장"
             android:textSize="40sp" />
@@ -46,7 +46,7 @@
             android:layout_gravity="center"
             android:background="@drawable/round_box_for_search"
             android:hint="검색어를 입력해 주세요"
-            android:fontFamily="@font/d"/>
+            />
 
 
         <Button
@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:text="검색하기"
             android:textSize="15sp"
-            android:fontFamily="@font/a"/>
+            />
 
     </LinearLayout>
 

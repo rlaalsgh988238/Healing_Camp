@@ -19,7 +19,7 @@
             android:text="힐링캠프"
             android:textSize="40dp"
             android:layout_margin="30dp"
-            android:fontFamily="@font/a"/>
+            />
 
         <View
             android:layout_width="0dp"

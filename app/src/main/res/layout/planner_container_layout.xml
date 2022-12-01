@@ -29,7 +29,7 @@
             android:layout_marginLeft="20sp"
             android:text="인덱스 번호"
             android:textSize="20sp"
-            android:fontFamily="@font/d"/>
+            />
 
 
     </FrameLayout>

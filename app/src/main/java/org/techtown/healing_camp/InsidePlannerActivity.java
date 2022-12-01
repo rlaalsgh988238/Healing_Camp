@@ -19,6 +19,8 @@ public class InsidePlannerActivity  extends MainActivity {
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearchEdit;
     TextView test1;
+    private DeleteDelegate delegate = new DeleteDelegate() {
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,11 +46,7 @@ public class InsidePlannerActivity  extends MainActivity {
 
         onClickEditPlanner.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                plannerList.remove(position);
-                listView.setItemChecked(-1,true);
-                onBackPressed();
-            }
+            public void onClick(View view) {delegate.delete(); onBackPressed();}
         });
 
         String index = String.valueOf(position);//@@@@@@@@@@

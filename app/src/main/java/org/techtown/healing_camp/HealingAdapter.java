@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class HealingAdapter extends BaseAdapter {
-    Context context = null;
-    LayoutInflater layoutInflater= null;
+    Context context;
+    LayoutInflater layoutInflater;
     ArrayList<PlannerInformation> plannerInformation;
 
     public HealingAdapter(Context context, ArrayList<PlannerInformation> plannerInformation){
@@ -59,7 +59,9 @@ public class HealingAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context.getApplicationContext(), InsidePlannerActivity.class);
+                Intent intentToMain = new Intent(context.getApplicationContext(),MainActivity.class);
                 intent.putExtra("index",position);
+                intentToMain.putExtra("index",position);
                 ((Activity)context).startActivity(intent);
             }
         });

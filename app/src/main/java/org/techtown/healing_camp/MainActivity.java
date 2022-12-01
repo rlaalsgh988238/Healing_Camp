@@ -20,8 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeleteDelegate {
     public ArrayList<PlannerInformation> plannerList;
+    Intent intent = getIntent();
 
     ImageButton onClickMakePlanner;
     Button onClickTopScroll,onClickWritePlaner;
@@ -38,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
         onClickWritePlaner = findViewById(R.id.onClickWritePlaner);
         onClickTopScroll = findViewById(R.id.onClickTopScroll);
         listView = findViewById(R.id.listView);
-
         plannerList = new ArrayList<PlannerInformation>();
 
-        final HealingAdapter healingAdapter = new HealingAdapter(this,plannerList);
+        HealingAdapter healingAdapter = new HealingAdapter(this,plannerList);
+
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
-        Intent intent = new Intent(this, InsidePlannerActivity.class);
 
         listView.setAdapter(healingAdapter);
+
 
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 arrayIndex++;
             }
         });
-
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastFirstVisibleItem;
@@ -82,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
                 listView.smoothScrollToPosition(0);
             }
         });//버튼클릭 최상단 이동 함수
+
+        InsidePlannerActivity insidePlannerActivity = new InsidePlannerActivity();
+        DeleteDelegate delegate = new DeleteDelegate() {
+            @Override
+            public void delete() {
+                int position = intent.getExtras().getInt("index");
+                plannerList.remove(position);
+                healingAdapter.notifyDataSetChanged();
+            }
+        };
+
+        insidePlannerActivity.delete();
         }
 
-    }
+}
