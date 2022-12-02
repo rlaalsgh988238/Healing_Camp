@@ -7,25 +7,21 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements DeleteDelegate {
+public class MainActivity extends AppCompatActivity implements DeleteInterface {
+
     public ArrayList<PlannerInformation> plannerList;
     Intent intent = getIntent();
 
     ImageButton onClickMakePlanner;
-    Button onClickTopScroll,onClickWritePlaner;
+    Button onClickTopScroll, onClickWritePlaner;
     ListView listView;
     Integer arrayIndex = 0;
 
@@ -41,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDelegate {
         listView = findViewById(R.id.listView);
         plannerList = new ArrayList<PlannerInformation>();
 
-        HealingAdapter healingAdapter = new HealingAdapter(this,plannerList);
+        HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
 
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
 
@@ -51,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDelegate {
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                plannerList.add(0,new PlannerInformation(arrayIndex.toString()));
+                plannerList.add(0, new PlannerInformation(arrayIndex.toString()));
                 healingAdapter.notifyDataSetChanged();
                 arrayIndex++;
             }
@@ -59,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDelegate {
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastFirstVisibleItem;
+
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
 
@@ -66,13 +63,13 @@ public class MainActivity extends AppCompatActivity implements DeleteDelegate {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(lastFirstVisibleItem<firstVisibleItem){
+                if (lastFirstVisibleItem < firstVisibleItem) {
                     onClickTopScroll.setVisibility(View.VISIBLE);//스크롤 다운
                 }
-                if(firstVisibleItem==0){
+                if (firstVisibleItem == 0) {
                     onClickTopScroll.setVisibility(View.INVISIBLE);//스크롤 업
                 }
-                lastFirstVisibleItem=firstVisibleItem;
+                lastFirstVisibleItem = firstVisibleItem;
             }
         });//스크롤 감지 함수
 
@@ -82,18 +79,11 @@ public class MainActivity extends AppCompatActivity implements DeleteDelegate {
                 listView.smoothScrollToPosition(0);
             }
         });//버튼클릭 최상단 이동 함수
+    }
 
-        InsidePlannerActivity insidePlannerActivity = new InsidePlannerActivity();
-        DeleteDelegate delegate = new DeleteDelegate() {
-            @Override
-            public void delete() {
-                int position = intent.getExtras().getInt("index");
-                plannerList.remove(position);
-                healingAdapter.notifyDataSetChanged();
-            }
-        };
-
-        insidePlannerActivity.delete();
-        }
-
+    @Override
+    public void delete() {
+        int position = intent.getExtras().getInt("index");
+        plannerList.remove(position);
+    }
 }

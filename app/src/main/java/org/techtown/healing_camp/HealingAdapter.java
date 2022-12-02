@@ -1,5 +1,6 @@
 package org.techtown.healing_camp;
 
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -44,16 +45,17 @@ public class HealingAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View coverView, ViewGroup parent) {
-        Context context = parent.getContext();
+    public View getView(int position, View covertView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.planner_container_layout,parent,false);
         Button onClickWritePlaner = (Button) view.findViewById(R.id.onClickWritePlaner);
         TextView text = (TextView) view.findViewById(R.id.textView);
-        int index =  Integer.parseInt(plannerInformation.get(position).getText())+1;
-        text.setText(getTime()+"에 작성된\n"+ index +"번째 플레너 입니다.");
 
-        Animation popUpAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_up_animation);
-        //view.setAnimation(popUpAnimation);
+        int index =  Integer.parseInt(plannerInformation.get(position).getText())+1;
+        text.setText(getTime()+"에 작성된\n 플레너 입니다.");
+
+        //애니메이션
+        Animation popUpAnimation = AnimationUtils.loadAnimation(context, (position==0) ? R.anim.pop_up_animation : R.anim.non_animation);
+        view.setAnimation(popUpAnimation);
 
         onClickWritePlaner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +67,6 @@ public class HealingAdapter extends BaseAdapter {
                 ((Activity)context).startActivity(intent);
             }
         });
-
-
         return view;
     }
     private String getTime(){
