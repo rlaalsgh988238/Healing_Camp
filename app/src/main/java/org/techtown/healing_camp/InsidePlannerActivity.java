@@ -1,5 +1,6 @@
 package org.techtown.healing_camp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.hardware.lights.LightState;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearchEdit;
     TextView test1;
-    LinearLayout editSpinner;
+    LinearLayout editBox;
     private DeleteInterface delegate;
 
     @Override
@@ -35,7 +36,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         onClickSearch = findViewById(R.id.onClickSearch);
         onClickBackLayer = findViewById(R.id.onClickBackLayer);
         writeToSearchEdit = findViewById(R.id.writeToSearchEdit);
-        editSpinner = findViewById(R.id.editSpinner);
+        editBox = findViewById(R.id.editBox);
 
         test1 = findViewById(R.id.test1);
         Intent intent = getIntent();
@@ -45,7 +46,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         onClickBackLayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delegate.delete();
                 onBackPressed();
             }
         });
@@ -58,9 +58,9 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         onClickEditPlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editSpinner.getVisibility()==view.INVISIBLE) {
-                    editSpinner.setVisibility(View.VISIBLE);
-                    editSpinner.startAnimation(onePointPopUP);
+                if(editBox.getVisibility()==view.INVISIBLE) {
+                    editBox.setVisibility(View.VISIBLE);
+                    editBox.startAnimation(onePointPopUP);
                     onClickEditPlanner.setVisibility(View.INVISIBLE);
                 }
             }
@@ -68,9 +68,9 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(editSpinner.getVisibility()==view.VISIBLE) {
-                    editSpinner.startAnimation(onePointPopUpExit);
-                    editSpinner.setVisibility(View.INVISIBLE);
+                if(editBox.getVisibility()==view.VISIBLE) {
+                    editBox.startAnimation(onePointPopUpExit);
+                    editBox.setVisibility(View.INVISIBLE);
                     onClickEditPlanner.setVisibility(View.VISIBLE);
                     onClickEditPlanner.startAnimation(popUp);
                 }
@@ -81,6 +81,17 @@ public class InsidePlannerActivity  extends AppCompatActivity {
 
         String index = String.valueOf(position);//@@@@@@@@@@
         test1.setText("\n              "+index);//@@@@@@@@@@@@@@@
+
+        RenameDialog renameDialog = new RenameDialog(this);
+        findViewById(R.id.editPlanner).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renameDialog.showDialog();
+                editBox.setVisibility(View.INVISIBLE);
+                onClickEditPlanner.setVisibility(View.VISIBLE);
+                onClickEditPlanner.startAnimation(popUp);
+            }
+        });
     }
 
 
