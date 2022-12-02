@@ -87,17 +87,49 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="40sp"
             android:background="@drawable/write_button"
-            android:elevation="30sp"/>
+            android:elevation="20dp"/>
 
         <LinearLayout
             android:id="@+id/editSpinner"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="40dp"
+            android:layout_margin="30dp"
             android:orientation="vertical"
-            android:background="@drawable/round_box"
-            android:visibility="invisible">
+            android:background="@drawable/round_box_for_edit"
+            android:visibility="invisible"
+            android:alpha="0.7"
+            android:elevation="0dp">
+
+            <Button
+                android:id="@+id/editPlannerName"
+                android:text="제목 수정"
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ripple_effect"
+                android:stateListAnimator="@null"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#01DFA5"/>
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ripple_effect"
+                android:stateListAnimator="@null"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#01DFA5"/>
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ripple_effect"
+                android:stateListAnimator="@null"/>
 
         </LinearLayout>
 

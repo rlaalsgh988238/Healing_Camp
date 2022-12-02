@@ -80,10 +80,4 @@ public class MainActivity extends AppCompatActivity implements DeleteInterface {
             }
         });//버튼클릭 최상단 이동 함수
     }
-
-    @Override
-    public void delete() {
-        int position = intent.getExtras().getInt("index");
-        plannerList.remove(position);
-    }
 }

@@ -1,6 +1,7 @@
 package org.techtown.healing_camp;
 
 import android.content.Intent;
+import android.hardware.lights.LightState;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,12 +54,14 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         View view = findViewById(R.id.backGround);
         Animation onePointPopUP = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pop_up_animation_one_point);
         Animation onePointPopUpExit = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pop_up_animation_one_point_exit);
+        Animation popUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pop_up_animation);
         onClickEditPlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(editSpinner.getVisibility()==view.INVISIBLE) {
                     editSpinner.setVisibility(View.VISIBLE);
                     editSpinner.startAnimation(onePointPopUP);
+                    onClickEditPlanner.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -67,6 +71,8 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 if(editSpinner.getVisibility()==view.VISIBLE) {
                     editSpinner.startAnimation(onePointPopUpExit);
                     editSpinner.setVisibility(View.INVISIBLE);
+                    onClickEditPlanner.setVisibility(View.VISIBLE);
+                    onClickEditPlanner.startAnimation(popUp);
                 }
                 return false;
             }
@@ -76,4 +82,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         String index = String.valueOf(position);//@@@@@@@@@@
         test1.setText("\n              "+index);//@@@@@@@@@@@@@@@
     }
+
+
 }

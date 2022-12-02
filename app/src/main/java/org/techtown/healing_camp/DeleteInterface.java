@@ -1,5 +1,5 @@
 package org.techtown.healing_camp;
 
 public interface DeleteInterface {
-    void delete();
+    default void delete(){};
 }
