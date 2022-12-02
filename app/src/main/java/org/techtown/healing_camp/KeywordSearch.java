@@ -24,7 +24,7 @@ public class KeywordSearch
 {
     public static String url_string;
     public String http, numOfRows, pageNo, MobileOS, MobileApp, serviceKey, encodedKeyword;
-    public static String[][] result = new String[10][12];//xml결과 저장
+    public static String[][] result = new String[10][10];//xml결과 저장
 
     public KeywordSearch() // 클래스 생성자에서는 바뀌지 않는 URL정보 입력해 줬어요
     {
@@ -36,7 +36,7 @@ public class KeywordSearch
         serviceKey="serviceKey=xb5%2BBJffxQf2twAHBua7UPgM9nhdnmp1GOz79VG7t%2BcCO69MUTn5JYGznC0kZY0jSaB%2F0GIq%2Bueo4dob5rQCuA%3D%3D";
     }
 
-    public void searchStart(String keyword) // 키워드 검색 시작 , 인자로 넣을 키워드 넣어주면 백스레드를 통해 result배열 리턴
+    public String[][] searchStart(String keyword) // 키워드 검색 시작 , 인자로 넣을 키워드 넣어주면 백스레드를 통해 result배열 리턴
     {
         try
         {
@@ -52,6 +52,14 @@ public class KeywordSearch
 
         BackgroundThread backTh = new BackgroundThread();
         backTh.start();
+        try // 백스레드가 배열을 전부  받아올 때 까지 기다렸다가 result 리턴
+        {
+            backTh.join();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
 
@@ -131,7 +139,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "facltDivNm"://캠핑장 환경,j=1
+                            case "lineIntro"://캠핑장 요약설명,j=1
                             {
                                 j = 1;
                                 if (parser.getText().contains("\n"))
@@ -141,7 +149,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "induty": //캠핑장 유형,j=2
+                            case "intro": //캠핑장 설명,j=2
                             {
                                 j = 2;
                                 if (parser.getText().contains("\n"))
@@ -151,7 +159,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "lctCl": //캠핑장 유형,j=3
+                            case "lctCl": //캠핑장 지리,j=3
                             {
                                 j = 3;
                                 if (parser.getText().contains("\n"))
@@ -161,7 +169,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "addr1": //주소,j=4
+                            case "doNm": //도 지역 ,j=4
                             {
                                 j = 4;
                                 if (parser.getText().contains("\n"))
@@ -171,7 +179,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "operPdCl": //운영기간,j=5
+                            case "sigunguNm": //시군구 ,j=5
                             {
                                 j = 5;
                                 if (parser.getText().contains("\n"))
@@ -181,7 +189,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "operDeCl": //운영일,j=6
+                            case "tel": //전화번호,j=6
                             {
                                 j = 6;
                                 if (parser.getText().contains("\n"))
@@ -191,7 +199,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "sbrsCl": //캠핑장 시설 정보,j=7
+                            case "homepage": //홈페이지 ,j=7
                             {
                                 j = 7;
                                 if (parser.getText().contains("\n"))
@@ -201,7 +209,7 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "posblFcltyCl": //주변 이용 가능시설,j=8
+                            case "themaEnvrnCl": //테마 ,j=8
                             {
                                 j = 8;
                                 if (parser.getText().contains("\n"))
@@ -211,19 +219,9 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
                                     break;
                                 }
                             }
-                            case "animalCmgCl": //반려동물,j=9
+                            case "firstImageUrl": //이미지,j=9
                             {
                                 j = 9;
-                                if (parser.getText().contains("\n"))
-                                    break;
-                                else {
-                                    KeywordSearch.result[i][j] = parser.getText(); // result배열에 값 저장
-                                    break;
-                                }
-                            }
-                            case "firstImageUrl": //캠핑장 이미지,j=10
-                            {
-                                j = 10;
                                 if (parser.getText().contains("\n"))
                                     break;
                                 else {
@@ -249,20 +247,22 @@ class BackgroundThread extends Thread // 파싱하기 위한 백스레드
         {
             ioe.printStackTrace();
         }
-
+        /*
         // 이거는 시험삼아 출력하는거요
-        for(int a=0; a<11;a++)
+        for(int a=0; a<10;a++)
         {
             System.out.println("첫번째: "+KeywordSearch.result[0][a]+" i="+0+" j="+a);
         }
 
-        for(int a=0; a<11;a++)
+        for(int a=0; a<10;a++)
         {
             System.out.println("두번째: "+KeywordSearch.result[1][a]+" i="+1+" j="+a);
         }
-        for(int a=0; a<11;a++)
+        for(int a=0; a<10;a++)
         {
             System.out.println("세번째: "+KeywordSearch.result[2][a]+" i="+1+" j="+a);
         }
+        */
+
     }
 }
