@@ -1,55 +1,82 @@
 package org.techtown.healing_camp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements DeleteInterface {
-
+public class MainActivity extends AppCompatActivity {
     public ArrayList<PlannerInformation> plannerList;
-    Intent intent = getIntent();
-
     ImageButton onClickMakePlanner;
-    Button onClickTopScroll, onClickWritePlaner;
+    Button onClickTopScroll;
     ListView listView;
-    Integer arrayIndex = 0;
+    int index;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+
+        ActivityResultLauncher<Intent> startActivityResuult;
 
         onClickMakePlanner = findViewById(R.id.OnClickMakePlanner);
-        onClickWritePlaner = findViewById(R.id.onClickWritePlaner);
         onClickTopScroll = findViewById(R.id.onClickTopScroll);
         listView = findViewById(R.id.listView);
         plannerList = new ArrayList<PlannerInformation>();
 
         HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
-
-        Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
-
         listView.setAdapter(healingAdapter);
 
+        //조건부 코드
+        startActivityResuult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == 1){ //타이틀수정
+                   String title = getIntent().getStringExtra("title");
+                   plannerList.set(index,new PlannerInformation(title,null));
+                   healingAdapter.notifyDataSetChanged();
+                }
+                if(result.getResultCode() == 2){ //삭제
+                    plannerList.remove(index);
+                    healingAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                plannerList.add(0, new PlannerInformation(arrayIndex.toString()));
-                healingAdapter.notifyDataSetChanged();
-                arrayIndex++;
+                plannerList.add(0,new PlannerInformation("작성해주세요",null));
+                healingAdapter.notifyDataSetChanged();;
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(MainActivity.this, InsidePlannerActivity.class);
+                index = position;
+                startActivityResuult.launch(intent);
             }
         });
 
