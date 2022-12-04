@@ -12,28 +12,43 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InsidePlannerActivity  extends AppCompatActivity {
-    ArrayList<PlannerInformation> plannerInformation;
+    ArrayList<Memo> memoList;
 
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearch;
     TextView test1;
     LinearLayout editBox;
-    //타이틀 수정 다이얼로그
+    //메모 추가 다이얼로그
+    Button addCancel,addAccept;
+    EditText editAddMemo;
+    ListView memoListView;
+    //메모 수정 다이얼로그
     Button editCancel,editAccept;
+    EditText editMemo;
+    //타이틀 수정 다이얼로그
+    Button editTitleCancel,editTitleAccept;
     EditText editReName;
     //삭제 다이얼로그
     Button deleteCancel,deleteAccept;
+    //저장 다이얼로그
+    Button saveCancel,saveAccept;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -45,13 +60,22 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         onClickBackLayer = findViewById(R.id.onClickBackLayer);
         writeToSearch = findViewById(R.id.writeToSearch);
         editBox = findViewById(R.id.editBox);
+        memoListView = findViewById(R.id.memoListView);
 
-        test1 = findViewById(R.id.test1);
+        memoList = new ArrayList<Memo>();
         Intent intent = getIntent();
+        Intent intentToMain = new Intent(InsidePlannerActivity.this,MainActivity.class);
 
-        Intent intentToMain = new Intent(getBaseContext(),MainActivity.class);
+        //조건부 코드
+        ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == 1){
+                }
+            }
+        });
 
-
+        //뒤로가기
         onClickBackLayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,8 +83,17 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
+        //검색버튼
+        onClickSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InsidePlannerActivity.this, SearchCompleteActivity.class);
+                startActivityResult.launch(intent);
+            }
+        });
+
         // 버튼 애니메이션
-        View view = findViewById(R.id.backGround);
+        View view = findViewById(R.id.memoListView);
         Animation onePointPopUP = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pop_up_animation_one_point);
         Animation onePointPopUpExit = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pop_up_animation_one_point_exit);
         Animation popUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pop_up_animation);
@@ -87,7 +120,77 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
+        //메모 추가
+        MemoAdapter memoAdapter = new MemoAdapter(this,memoList);
+        memoListView.setAdapter(memoAdapter);
+        findViewById(R.id.onClickAddMemo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editBox.setVisibility(View.INVISIBLE);
+                onClickEditPlanner.setVisibility(View.VISIBLE);
+                onClickEditPlanner.startAnimation(popUp);
+
+                View editDialogView = getLayoutInflater().inflate(R.layout.planner_add_memo_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(InsidePlannerActivity.this);
+                AlertDialog dialog = builder.create();
+                dialog.setView(editDialogView);
+                addCancel = editDialogView.findViewById(R.id.addCancel);
+                addAccept = editDialogView.findViewById(R.id.addAccept);
+                editAddMemo = editDialogView.findViewById(R.id.addMemo);
+                dialog.show();
+
+                addCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                addAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String memo = editAddMemo.getText().toString();
+                        memoList.add(new Memo(memo));
+                        dialog.dismiss();
+                        memoAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
         //메모장 메모 수정
+        memoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                editBox.setVisibility(View.INVISIBLE);
+                onClickEditPlanner.setVisibility(View.VISIBLE);
+                onClickEditPlanner.startAnimation(popUp);
+
+                View editDialogView = getLayoutInflater().inflate(R.layout.planner_edit_memo_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(InsidePlannerActivity.this);
+                AlertDialog dialog = builder.create();
+                dialog.setView(editDialogView);
+                editCancel = editDialogView.findViewById(R.id.editCancel);
+                editAccept = editDialogView.findViewById(R.id.editAccept);
+                editMemo = editDialogView.findViewById(R.id.editMemo);
+                dialog.show();
+
+                editCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                editAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String memo = editMemo.getText().toString();
+                        memoList.set(position,new Memo(memo));
+                        dialog.dismiss();
+                        memoAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        //메모장 타이틀 수정
         findViewById(R.id.onClickTitleEdit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,19 +202,19 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(InsidePlannerActivity.this);
                 AlertDialog dialog = builder.create();
                 dialog.setView(editDialogView);
-                editCancel = editDialogView.findViewById(R.id.reNameCancel);
-                editAccept = editDialogView.findViewById(R.id.reNameAccept);
+                editTitleCancel = editDialogView.findViewById(R.id.reNameCancel);
+                editTitleAccept = editDialogView.findViewById(R.id.reNameAccept);
                 editReName = editDialogView.findViewById(R.id.editReName);
                 dialog.show();
 
-                editCancel.setOnClickListener(new View.OnClickListener() {
+                editTitleCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
                     }
                 });
 
-                editAccept.setOnClickListener(new View.OnClickListener() {
+                editTitleAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String title = editReName.getText().toString();
@@ -123,7 +226,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 });
             }
         });
-
         //메모장 삭제
         findViewById(R.id.onClickDelete).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +253,39 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         setResult(2);
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+            }
+        });
+        //메모장 저장
+        findViewById(R.id.onClickSave).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editBox.setVisibility(View.INVISIBLE);
+                onClickEditPlanner.setVisibility(View.VISIBLE);
+                onClickEditPlanner.startAnimation(popUp);
+
+                View deleteDialogView = getLayoutInflater().inflate(R.layout.planner_save_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(InsidePlannerActivity.this);
+                AlertDialog dialog = builder.create();
+                dialog.setView(deleteDialogView);
+                saveCancel = deleteDialogView.findViewById(R.id.saveCancel);
+                saveAccept = deleteDialogView.findViewById(R.id.saveAccept);
+                dialog.show();
+
+                deleteCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                deleteAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setResult(3);
                         dialog.dismiss();
                         finish();
                     }

@@ -23,6 +23,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".InsidePlannerActivity"/>
+        <activity android:name=".SearchCompleteActivity"/>
     </application>
 
 </manifest>

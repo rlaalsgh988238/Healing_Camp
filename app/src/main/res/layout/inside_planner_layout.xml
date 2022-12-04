@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -44,7 +45,7 @@
             android:layout_height="40sp"
             android:layout_margin="10sp"
             android:layout_gravity="center"
-            android:background="@drawable/round_box_for_search"
+            android:background="@drawable/round_box_for_search_button"
             android:hint="검색어를 입력해 주세요"
             />
 
@@ -65,21 +66,18 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp">
 
-        <ScrollView
-            android:id="@+id/backGround"
+        <LinearLayout
+            android:id="@+id/campView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="Orientation" />
+
+        <ListView
+            android:id="@+id/memoListView"
             android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/test1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" "
-                android:textSize="50dp"
-                android:layout_gravity="center"/>
-
-        </ScrollView>
+        </ListView>
 
         <Button
             android:id="@+id/onClickEditPlanner"
@@ -103,8 +101,21 @@
             android:visibility="invisible">
 
             <Button
+                android:id="@+id/onClickAddMemo"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ripple_effect"
+                android:stateListAnimator="@null"
+                android:text="메모 추가"/>
+
+            <View
+                android:layout_width="140sp"
+                android:layout_height="5dp"
+                android:background="#01DFA5" />
+
+            <Button
                 android:id="@+id/onClickTitleEdit"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="50dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
@@ -117,19 +128,20 @@
 
             <Button
                 android:id="@+id/onClickDelete"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="50dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
                 android:text="메모 삭제"/>
 
             <View
-                android:layout_width="110dp"
+                android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="#01DFA5" />
 
             <Button
-                android:layout_width="100dp"
+                android:id="@+id/onClickSave"
+                android:layout_width="130dp"
                 android:layout_height="50dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"

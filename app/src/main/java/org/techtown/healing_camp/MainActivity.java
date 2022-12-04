@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
 
-        ActivityResultLauncher<Intent> startActivityResuult;
+        ActivityResultLauncher<Intent> startActivityResult;
 
         onClickMakePlanner = findViewById(R.id.OnClickMakePlanner);
         onClickTopScroll = findViewById(R.id.onClickTopScroll);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(healingAdapter);
 
         //조건부 코드
-        startActivityResuult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1){ //타이틀수정
@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
                     plannerList.remove(index);
                     healingAdapter.notifyDataSetChanged();
                 }
+                if(result.getResultCode()==3){
+
+                }
             }
         });
 
@@ -71,12 +74,13 @@ public class MainActivity extends AppCompatActivity {
                 healingAdapter.notifyDataSetChanged();;
             }
         });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(MainActivity.this, InsidePlannerActivity.class);
                 index = position;
-                startActivityResuult.launch(intent);
+                startActivityResult.launch(intent);
             }
         });
 

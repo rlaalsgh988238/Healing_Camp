@@ -12,9 +12,9 @@
         android:right="5dp"
         android:top="5dp"/>
     <corners
-        android:bottomLeftRadius="8sp"
-        android:bottomRightRadius="8sp"
-        android:topLeftRadius="8sp"
-        android:topRightRadius="8sp"/>
+        android:bottomLeftRadius="5sp"
+        android:bottomRightRadius="5sp"
+        android:topLeftRadius="5sp"
+        android:topRightRadius="5sp"/>
 
 </shape>
