@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
         listView.setAdapter(healingAdapter);
 
-        //조건부 코드
+        //조건부 코드(1:타이틀 수정, 2: 삭제, 3: 캠핑장 이름)
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //메모장 추가
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 healingAdapter.notifyDataSetChanged();;
             }
         });
-
+        //메모장 진입
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityResult.launch(intent);
             }
         });
-
+        //스크롤 감지
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int lastFirstVisibleItem;
 
@@ -102,13 +102,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 lastFirstVisibleItem = firstVisibleItem;
             }
-        });//스크롤 감지 함수
-
+        });
+        //스크롤 버튼 가장 위로 올라감
         onClickTopScroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listView.smoothScrollToPosition(0);
             }
-        });//버튼클릭 최상단 이동 함수
+        });
     }
 }

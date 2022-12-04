@@ -34,7 +34,7 @@
             android:layout_height="60dp">
 
             <Button
-                android:id="@+id/deleteCancel"
+                android:id="@+id/deleteMemoCancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,7 +51,7 @@
                 android:alpha="0.4"/>
 
             <Button
-                android:id="@+id/deleteAccept"
+                android:id="@+id/deleteMemoAccept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

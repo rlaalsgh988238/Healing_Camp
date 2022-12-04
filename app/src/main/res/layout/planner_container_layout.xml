@@ -4,29 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:animateLayoutChanges="true"
     android:background="#ffffff">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
-            android:id="@+id/onClickWritePlaner"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@drawable/round_box"
-            tools:ignore="MissingConstraints"
-            android:layout_margin="10sp"
-            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="390dp"
             android:layout_height="match_parent"
             android:gravity="left|center"
-            android:layout_marginLeft="10sp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="10sp"
+            android:background="@drawable/round_box">
 
             <TextView
                 android:id="@+id/title"
@@ -40,6 +28,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_margin="10sp"
                 android:background="#01DFA5" />
 
             <TextView
@@ -54,7 +43,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="#01DFA5" />
+                android:background="#01DFA5"
+                android:layout_margin="10sp"/>
 
             <TextView
                 android:id="@+id/date"
@@ -67,7 +57,5 @@
 
         </LinearLayout>
 
-
-    </FrameLayout>
 
 </LinearLayout>

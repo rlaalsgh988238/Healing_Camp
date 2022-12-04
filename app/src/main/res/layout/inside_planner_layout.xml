@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:divider="#ffffff">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +22,11 @@
             android:background="#00ff0000"
             android:drawableLeft="@drawable/back_button2"
             android:text="뒤로가기"
-            android:textColor="#09C08F"
-            />
+            android:textColor="#09C08F"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginLeft="10sp"
             android:text="메모장"
             android:textSize="40sp" />
@@ -61,22 +60,33 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:layout_margin="10sp"
+        android:background="#01DFA5"
+        android:elevation="5sp"/>
+
+
+        <LinearLayout
+            android:id="@+id/showPickUpPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Orientation"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp">
 
-        <LinearLayout
-            android:id="@+id/campView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="Orientation" />
-
         <ListView
             android:id="@+id/memoListView"
             android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:divider="#ffffff">
+
         </ListView>
 
         <Button
@@ -132,7 +142,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
-                android:text="메모 삭제"/>
+                android:text="메모장 삭제"/>
 
             <View
                 android:layout_width="match_parent"
@@ -145,7 +155,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
-                android:text="메모 저장"/>
+                android:text="메모장 저장"/>
 
         </LinearLayout>
 
