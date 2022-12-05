@@ -116,7 +116,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1&& flag[0] ==true){
-                    nameCampingPlace.setText(intent.getExtras().getInt("1"));
+                    nameCampingPlace.setText("하이하이");//제목 바꿀수있음
                     showPickUpPlace.addView(viewResultContainer);
                     flag[0] =false;
                 }
@@ -129,13 +129,14 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         showPickUpPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(InsidePlannerActivity.this,DetailViewActivity.class);
+                startActivity(intent);
             }
         });
         //캠핑장소 삭제
-        showPickUpPlace.setOnClickListener(new View.OnClickListener() {
+        showPickUpPlace.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 editBox.setVisibility(View.INVISIBLE);
                 onClickEditPlanner.setVisibility(View.VISIBLE);
                 onClickEditPlanner.startAnimation(popUp);
@@ -164,6 +165,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                         flag[0] = true;
                     }
                 });
+                return false;
             }
         });
 

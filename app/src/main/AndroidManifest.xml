@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".InsidePlannerActivity"/>
         <activity android:name=".SearchCompleteActivity"/>
+        <activity android:name=".DetailViewActivity"/>
     </application>
 
 </manifest>
