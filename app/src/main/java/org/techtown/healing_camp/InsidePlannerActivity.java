@@ -116,7 +116,8 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1&& flag[0] ==true){
-                    nameCampingPlace.setText("하이하이");//제목 바꿀수있음
+                    //DB 접근해서 추가한 캠핑장 정보 업데이트
+                    nameCampingPlace.setText("하이하이");
                     showPickUpPlace.addView(viewResultContainer);
                     flag[0] =false;
                 }
