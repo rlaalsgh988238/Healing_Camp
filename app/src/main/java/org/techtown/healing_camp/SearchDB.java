@@ -68,14 +68,14 @@ public class SearchDB extends SQLiteOpenHelper
         return result;
     }
 
-    public void delete(int memoNum)
-    { // 값 삭제 , 인자로 인덱스 넘버
+    public void delete(int memoNum) // 값 삭제 , 인자로 인덱스 넘버
+    {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM SearchResult WHERE MEMONUM = " + memoNum);
         db.close();
     }
 
-    public String searchAll()
+    public String searchAll() // 데이터베이스 테이블 열어보기
     {
         String sql="SELECT * FROM SearchResult";
         SQLiteDatabase db = getWritableDatabase();
