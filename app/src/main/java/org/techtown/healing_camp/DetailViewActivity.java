@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 public class DetailViewActivity extends AppCompatActivity {
     SearchList searchList;
-    Button addCampingPlaceToMemo;
+    Button addCampingPlaceToMemo, onClickBackLayer;
     TextView text0,text2,text3,text4,text5,text6,text7,text8;
     ImageView image9;
     
@@ -25,6 +25,7 @@ public class DetailViewActivity extends AppCompatActivity {
         setContentView(R.layout.detail_view_layout);
 
         addCampingPlaceToMemo = findViewById(R.id.addCampingPlaceToMemo);
+        onClickBackLayer = findViewById(R.id.onClickBackLayer);
 
         image9 = findViewById(R.id.image9);
         text0 = findViewById(R.id.text0);
@@ -60,6 +61,14 @@ public class DetailViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setResult(1);
                 finish();
+            }
+        });
+        //뒤로가기 버튼
+        //뒤로가기 버튼
+        onClickBackLayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
