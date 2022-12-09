@@ -4,11 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
 public class DetailViewActivity extends AppCompatActivity {
+    SearchList searchList;
     Button addCampingPlaceToMemo;
+    TextView text0,text2,text3,text4,text5,text6,text7,text8;
+    ImageView image9;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,8 +26,35 @@ public class DetailViewActivity extends AppCompatActivity {
 
         addCampingPlaceToMemo = findViewById(R.id.addCampingPlaceToMemo);
 
-        Intent intentToInsidePlanner = new Intent(DetailViewActivity.this,InsidePlannerActivity.class);
+        image9 = findViewById(R.id.image9);
+        text0 = findViewById(R.id.text0);
+        text2 = findViewById(R.id.text2);
+        text3 = findViewById(R.id.text3);
+        text4 = findViewById(R.id.text4);
+        text5 = findViewById(R.id.text5);
+        text6 = findViewById(R.id.text6);
+        text7 = findViewById(R.id.text7);
+        text8 = findViewById(R.id.text8);
 
+        
+        //선택 정보 가져오기
+        String[] result = getIntent().getStringArrayExtra("List");
+        searchList = new SearchList(result);
+        //상세 내용작성
+        text0.setText(searchList.getName());
+        text2.setText(searchList.getDetailInfo());
+        text3.setText(searchList.getHowToCome());
+        text4.setText(searchList.getBigLocal());
+        text5.setText(searchList.getLocal());
+        text6.setText(searchList.getTel());
+        text7.setText(searchList.getHomePage());
+        text8.setText(searchList.getTheme());
+        Glide.with(this).load(searchList.getUrl())
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                .optionalCenterCrop()
+                .fallback(R.drawable.no_image)
+                .into(image9);
+        //추가 버튼
         addCampingPlaceToMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

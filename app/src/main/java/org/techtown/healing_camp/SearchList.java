@@ -11,23 +11,23 @@ public class SearchList {
         return result;
     }
     //이름
-    public String getName(int position){
-        return result[0];
-    }
+    public String getName(){return result[0];}
     //요약설명
-    public String getInfo(int position){
-        return result[1];
-    }
+    public String getInfo(){return result[1];}
+    //상세설명
+    public String getDetailInfo(){return result[2];}
+    //지리
+    public String getHowToCome(){return result[3];}
+    //도/지역
+    public String getBigLocal(){return result[4];}
     //지역
-    public String getLocal(int position){
-        return result[5];
-    }
+    public String getLocal(){return result[5];}
     //전화번호
-    public String getTel(int position){
-        return result[6];
-    }
+    public String getTel(){return result[6];}
     //홈페이지
-    public String getHomePage(int position){
-        return result[7];
-    }
+    public String getHomePage(){return result[7];}
+    //테마
+    public String getTheme(){return  result[8];}
+    //이미지
+    public String getUrl(){return result[9];}
 }

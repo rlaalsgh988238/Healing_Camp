@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/detail_view_layout.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/inside_planner_layout.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/planner_container_layout.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/planner_delete_camping_place_dialog.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/search_result_container_layout.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/rlaal/Healing_Camp/app/src/main/res/layout/search_result_layout.xml" value="0.24947916666666667" />
       </map>

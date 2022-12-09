@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 
 public class SearchAdapter extends BaseAdapter {
@@ -48,12 +52,18 @@ public class SearchAdapter extends BaseAdapter {
         whereCampingPlace = view.findViewById(R.id.whereCampingPlace);
         telCampingPlace = view.findViewById(R.id.telCampingPlace);
         urlCampingPlace = view.findViewById(R.id.urlCampingPlace);
+        imageView = view.findViewById(R.id.imageView);
 
-        nameCampingPlace.setText(searchList.get(position).getName(position));
-        infoCampingPlace.setText(searchList.get(position).getInfo(position));
-        whereCampingPlace.setText(searchList.get(position).getLocal(position));
-        telCampingPlace.setText(searchList.get(position).getTel(position));
-        urlCampingPlace.setText(searchList.get(position).getHomePage(position));
+        Glide.with(view).load(searchList.get(position).getUrl())
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                .optionalCenterCrop()
+                .fallback(R.drawable.no_image)
+                .into(imageView);
+        nameCampingPlace.setText(searchList.get(position).getName());
+        infoCampingPlace.setText(searchList.get(position).getInfo());
+        whereCampingPlace.setText(searchList.get(position).getLocal());
+        telCampingPlace.setText(searchList.get(position).getTel());
+        urlCampingPlace.setText(searchList.get(position).getHomePage());
 
         return view;
     }
