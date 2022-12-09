@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10sp">
+    android:gravity="center"
+    android:animateLayoutChanges="true"
+    android:background="#ffffff">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
-
-        <Button
-        android:id="@+id/OnClickWritePlaner"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/round_box"
-        tools:ignore="MissingConstraints"
-        android:layout_margin="10sp"/>
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="390dp"
             android:layout_height="match_parent"
-            android:text="인덱스 번호"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:gravity="left|center"
+            android:orientation="vertical"
+            android:layout_margin="10sp"
+            android:background="@drawable/round_box">
 
-    </FrameLayout>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7sp"
+                android:background="#ffffff"
+                android:text="인덱스 번호"
+                android:textSize="20sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="10sp"
+                android:background="#01DFA5" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7sp"
+                android:background="#ffffff"
+                android:text="작성해 주세요"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#01DFA5"
+                android:layout_margin="10sp"/>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7sp"
+                android:background="#ffffff"
+                android:text="인덱스 번호"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+</LinearLayout>

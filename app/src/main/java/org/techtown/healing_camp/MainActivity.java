@@ -1,85 +1,112 @@
 package org.techtown.healing_camp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<PlannerInformation> plannerList;
 
+    public ArrayList<PlannerInformation> plannerList;
     ImageButton onClickMakePlanner;
     Button onClickTopScroll;
-    LinearLayout plannerContainerLayout;
-    ScrollView scrollView;
-    Integer arrayIndex = 0;
+    ListView listView;
+    int index;
 
-    Button check;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+
+        ActivityResultLauncher<Intent> startActivityResult;
 
         onClickMakePlanner = findViewById(R.id.OnClickMakePlanner);
         onClickTopScroll = findViewById(R.id.onClickTopScroll);
-        plannerContainerLayout = findViewById(R.id.layoutPlannerContainer);
-        scrollView = findViewById(R.id.scrollView);
+        listView = findViewById(R.id.listView);
+        plannerList = new ArrayList<PlannerInformation>();
 
-        check = findViewById(R.id.check);
+        HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
+        listView.setAdapter(healingAdapter);
 
-        //새로운 플래너 생성
-        plannerList = new ArrayList<>();
-        //애니매이션 생성
-        Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up_animation);
-
-        onClickMakePlanner.setOnClickListener(new View.OnClickListener() {       //버튼 누르면 새로운 플래너 생성
-            @Override                                                            //생성된 플레너는 리스트에 스택
-            public void onClick(View view) {
-                PlannerInformation plannerInformation = new PlannerInformation(arrayIndex.toString());//플래너 내부 정보가 입력 된 플래너정보객체 생성
-                plannerList.add(plannerInformation); // 리스트에 생성된 플래너정보객체 삽입
-                InflatorPlanner inflatorPlanner = new InflatorPlanner(getApplicationContext(), plannerList.get(arrayIndex));//삽입된 플래너정보 화면에 생성시킬 준비
-                plannerContainerLayout.addView(inflatorPlanner);// 화면에 생성
-                // plannerContainerLayout.startAnimation(popUpAnimation); //애니메이션 추가
-                arrayIndex+=1;
+        //조건부 코드(1:타이틀 수정, 2: 삭제, 3: 캠핑장 이름)
+        startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == 1){ //타이틀수정
+                   String title = getIntent().getStringExtra("title");
+                   plannerList.set(index,new PlannerInformation(title,null));
+                   healingAdapter.notifyDataSetChanged();
+                }
+                if(result.getResultCode() == 2){ //삭제
+                    plannerList.remove(index);
+                    healingAdapter.notifyDataSetChanged();
+                }
             }
         });
-
-        //리스트에 잘 들어갔는지 확인하는 버튼 코드. 버튼 누르면 생성된 리스트의 내부정보 보여주는 버튼
-        check.setOnClickListener(new View.OnClickListener() {
+        //메모장 추가
+        onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    check.setText(plannerList.get(arrayIndex-1).text);
+                plannerList.add(0,new PlannerInformation("작성해주세요",null));
+                healingAdapter.notifyDataSetChanged();;
+            }
+        });
+        //메모장 진입
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(MainActivity.this, InsidePlannerActivity.class);
+                index = position;
+                startActivityResult.launch(intent);
+            }
+        });
+        //스크롤 감지
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int lastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
             }
 
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (lastFirstVisibleItem < firstVisibleItem) {
+                    onClickTopScroll.setVisibility(View.VISIBLE);//스크롤 다운
+                }
+                if (firstVisibleItem == 0) {
+                    onClickTopScroll.setVisibility(View.INVISIBLE);//스크롤 업
+                }
+                lastFirstVisibleItem = firstVisibleItem;
+            }
         });
-
-        //if(){onClickTopScroll.setVisibility(View.VISIBLE);}
-        //else if (){onClickTopScroll.setVisibility(View.INVISIBLE);}
-
+        //스크롤 버튼 가장 위로 올라감
         onClickTopScroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scrollView.fullScroll(scrollView.FOCUS_UP);
-            }
-        });//스크롤 버튼이 생성되고, 버튼을 누르면 위로 올라감
-
-       /* .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                check.setText("3");
+                listView.smoothScrollToPosition(0);
             }
         });
-        */ //생성된 박스를 클릭했을때 이벤트 만들기 시도(실패)
     }
 }

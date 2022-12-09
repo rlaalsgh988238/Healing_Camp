@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:divider="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center|left"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="110sp"
+            android:layout_height="110sp"
+            android:layout_margin="10sp"
+            android:background="@drawable/round_box_for_search" />
+
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20sp">
+
+        <TextView
+            android:id="@+id/nameCampingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="캠핑장 이름"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/InfoCampingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="캠핑장 요약"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/urlCampingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="캠핑장 Url"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/whereCampingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="캠핑장 지역"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/telCampingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="캠핑장 전화번호"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:layout_margin="10sp"
+        android:background="#01DFA5"
+        android:elevation="5sp" />
+</LinearLayout>
