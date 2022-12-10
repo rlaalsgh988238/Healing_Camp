@@ -53,14 +53,18 @@ public class MainActivity extends AppCompatActivity {
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == 1){ //타이틀수정
-                   String title = getIntent().getStringExtra("title");
+                if(result.getResultCode() == 1){
+                   String title = TitleObject.getTitle();
                    plannerList.set(index,new PlannerInformation(title,null));
+                   TitleObject.setTitle(null);
                    healingAdapter.notifyDataSetChanged();
                 }
-                if(result.getResultCode() == 2){ //삭제
+                if(result.getResultCode() == 2){
                     plannerList.remove(index);
                     healingAdapter.notifyDataSetChanged();
+                }
+                if(result.getResultCode() == 3){
+                    String nameCampingPlace;
                 }
             }
         });

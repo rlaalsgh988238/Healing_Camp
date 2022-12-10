@@ -18,7 +18,7 @@ public class DetailViewActivity extends AppCompatActivity {
     Button addCampingPlaceToMemo, onClickBackLayer;
     TextView text0,text2,text3,text4,text5,text6,text7,text8;
     ImageView image9;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +37,7 @@ public class DetailViewActivity extends AppCompatActivity {
         text7 = findViewById(R.id.text7);
         text8 = findViewById(R.id.text8);
 
-        
+
         //선택 정보 가져오기
         String[] result = getIntent().getStringArrayExtra("List");
         searchList = new SearchList(result);
@@ -50,7 +50,8 @@ public class DetailViewActivity extends AppCompatActivity {
         text6.setText(searchList.getTel());
         text7.setText(searchList.getHomePage());
         text8.setText(searchList.getTheme());
-        Glide.with(this).load(searchList.getUrl())
+        String image = searchList.getUrl();
+        Glide.with(this).load(image)
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                 .fallback(R.drawable.no_image)
                 .into(image9);
@@ -71,3 +72,4 @@ public class DetailViewActivity extends AppCompatActivity {
         });
     }
 }
+

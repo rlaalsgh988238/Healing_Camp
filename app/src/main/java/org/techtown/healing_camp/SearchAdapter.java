@@ -55,8 +55,7 @@ public class SearchAdapter extends BaseAdapter {
         imageView = view.findViewById(R.id.imageView);
 
         Glide.with(view).load(searchList.get(position).getUrl())
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .optionalCenterCrop()
+                .centerCrop()
                 .fallback(R.drawable.no_image)
                 .into(imageView);
         nameCampingPlace.setText(searchList.get(position).getName());

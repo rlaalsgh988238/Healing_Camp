@@ -323,7 +323,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String title = editReName.getText().toString();
-
+                        TitleObject.setTitle(title);
                         setResult(1);
                         dialog.dismiss();
                         finish();
