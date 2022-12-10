@@ -52,7 +52,6 @@ public class DetailViewActivity extends AppCompatActivity {
         text8.setText(searchList.getTheme());
         Glide.with(this).load(searchList.getUrl())
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .optionalCenterCrop()
                 .fallback(R.drawable.no_image)
                 .into(image9);
         //추가 버튼
@@ -63,7 +62,6 @@ public class DetailViewActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //뒤로가기 버튼
         //뒤로가기 버튼
         onClickBackLayer.setOnClickListener(new View.OnClickListener() {
             @Override

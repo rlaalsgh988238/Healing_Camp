@@ -66,7 +66,7 @@
         android:layout_gravity="center"
         android:layout_margin="10sp"
         android:background="#01DFA5"
-        android:elevation="5sp"/>
+        android:elevation="2sp"/>
 
 
         <LinearLayout

@@ -38,7 +38,7 @@
             android:layout_width="380dp"
             android:layout_height="3dp"
             android:background="#01DFA5"
-            android:elevation="10sp"/>
+            android:elevation="2sp"/>
 
     </LinearLayout>
 
