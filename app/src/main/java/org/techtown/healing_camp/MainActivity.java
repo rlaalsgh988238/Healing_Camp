@@ -1,32 +1,25 @@
 package org.techtown.healing_camp;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     public ArrayList<PlannerInformation> plannerList;
+    String title;
     ImageButton onClickMakePlanner;
     Button onClickTopScroll;
     ListView listView;
@@ -49,22 +42,26 @@ public class MainActivity extends AppCompatActivity {
         HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
         listView.setAdapter(healingAdapter);
 
-        //조건부 코드(1:타이틀 수정, 2: 삭제, 3: 캠핑장 이름)
+        //조건부 코드(1:타이틀 수정, 2: 삭제, 3: 캠핑장 이름 및 저장)
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1){
-                   String title = TitleObject.getTitle();
-                   plannerList.set(index,new PlannerInformation(title,null));
-                   TitleObject.setTitle(null);
-                   healingAdapter.notifyDataSetChanged();
+                    title = PlannerObject.getTitle();
+                    plannerList.set(index,new PlannerInformation(title,null));
+                    PlannerObject.setTitle(null);
+                    healingAdapter.notifyDataSetChanged();
                 }
                 if(result.getResultCode() == 2){
                     plannerList.remove(index);
                     healingAdapter.notifyDataSetChanged();
                 }
                 if(result.getResultCode() == 3){
-                    String nameCampingPlace;
+                    title = plannerList.get(index).title;
+                    String[] context = PlannerObject.getResult();
+                    plannerList.set(index, new PlannerInformation(title,context[0]));
+                    objectReset();
+                    healingAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -112,5 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 listView.smoothScrollToPosition(0);
             }
         });
+    }
+    void objectReset(){
+        PlannerObject.setResult(null);
+        PlannerObject.setMemo(null);
+        PlannerObject.setTitle(null);
     }
 }

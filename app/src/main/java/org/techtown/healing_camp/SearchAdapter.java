@@ -32,7 +32,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public SearchList getItem(int position) {
         return searchList.get(position);
     }
 
@@ -48,7 +48,7 @@ public class SearchAdapter extends BaseAdapter {
         ImageView imageView;
         TextView nameCampingPlace,infoCampingPlace,whereCampingPlace,telCampingPlace,urlCampingPlace;
         nameCampingPlace = view.findViewById(R.id.nameCampingPlace);
-        infoCampingPlace = view.findViewById(R.id.InfoCampingPlace);
+        infoCampingPlace = view.findViewById(R.id.infoCampingPlace);
         whereCampingPlace = view.findViewById(R.id.whereCampingPlace);
         telCampingPlace = view.findViewById(R.id.telCampingPlace);
         urlCampingPlace = view.findViewById(R.id.urlCampingPlace);

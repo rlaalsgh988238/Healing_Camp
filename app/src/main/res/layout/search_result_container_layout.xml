@@ -34,7 +34,7 @@
             android:text="캠핑장 이름"
             android:textSize="17sp"/>
         <TextView
-            android:id="@+id/InfoCampingPlace"
+            android:id="@+id/infoCampingPlace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"

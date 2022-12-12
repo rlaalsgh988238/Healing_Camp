@@ -1,12 +1,12 @@
 package org.techtown.healing_camp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 public class DetailViewActivity extends AppCompatActivity {
     SearchList searchList;
+    String [] result;
     Button addCampingPlaceToMemo, onClickBackLayer;
     TextView text0,text2,text3,text4,text5,text6,text7,text8;
     ImageView image9;
@@ -39,7 +40,10 @@ public class DetailViewActivity extends AppCompatActivity {
 
 
         //선택 정보 가져오기
-        String[] result = getIntent().getStringArrayExtra("List");
+        result = getIntent().getStringArrayExtra("List");
+        if(result==null){
+            result = PlannerObject.getResult();
+        }
         searchList = new SearchList(result);
         //상세 내용작성
         text0.setText(searchList.getName());
@@ -59,6 +63,7 @@ public class DetailViewActivity extends AppCompatActivity {
         addCampingPlaceToMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PlannerObject.setResult(result);
                 setResult(1);
                 finish();
             }

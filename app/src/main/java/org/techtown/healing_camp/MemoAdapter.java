@@ -26,7 +26,7 @@ public class MemoAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Memo getItem(int i) {
         return memoList.get(i);
     }
 

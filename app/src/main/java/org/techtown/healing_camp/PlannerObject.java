@@ -1,13 +1,13 @@
 package org.techtown.healing_camp;
 
-public class Object {
+public class PlannerObject {
     static String Title;
     static String[] Memo,Result;
-    public static Object object = new Object();
-    private Object(){
+    public static PlannerObject plannerObject = new PlannerObject();
+    private PlannerObject(){
     }
-    public static Object getTitleObject(){
-        return object;
+    public static PlannerObject getTitleObject(){
+        return plannerObject;
     }
 
     //메모장 이름 받기

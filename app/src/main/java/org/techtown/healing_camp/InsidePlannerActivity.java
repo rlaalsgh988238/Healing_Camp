@@ -1,24 +1,19 @@
 package org.techtown.healing_camp;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.lights.LightState;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,14 +23,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class InsidePlannerActivity  extends AppCompatActivity {
     ArrayList<Memo> memoList;
+    String[] memo,campingPlace;
 
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearch;
@@ -111,13 +109,26 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         View viewResultContainer = layoutInflater.inflate(R.layout.search_result_container_layout,showPickUpPlace,false);
         //캠핑장 설명 객체 선언
         TextView nameCampingPlace =  viewResultContainer.findViewById(R.id.nameCampingPlace);
+        TextView infoCampingPlace = viewResultContainer.findViewById(R.id.infoCampingPlace);
+        TextView urlCampingPlace = viewResultContainer.findViewById(R.id.urlCampingPlace);
+        TextView whereCampingPlace = viewResultContainer.findViewById(R.id.whereCampingPlace);
+        TextView telCampingPlace = viewResultContainer.findViewById(R.id.telCampingPlace);
+        ImageView imageView = viewResultContainer.findViewById(R.id.imageView);
         //검색 이후 캠핑장 선택 결과 받기-db연결 필요
         ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1&& flag[0] ==true){
-                    //DB 접근해서 추가한 캠핑장 정보 업데이트
-                    nameCampingPlace.setText("하이하이");
+                    campingPlace = PlannerObject.getResult();
+                    nameCampingPlace.setText(campingPlace[0]);
+                    infoCampingPlace.setText(campingPlace[1]);
+                    urlCampingPlace.setText(campingPlace[7]);
+                    whereCampingPlace.setText(campingPlace[4]+" "+campingPlace[5]);
+                    telCampingPlace.setText(campingPlace[6]);
+                    Glide.with(viewResultContainer).load(campingPlace[9])
+                            .centerCrop()
+                            .fallback(R.drawable.no_image)
+                            .into(imageView);
                     showPickUpPlace.addView(viewResultContainer);
                     flag[0] =false;
                 }
@@ -188,7 +199,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
-        //메모 추가-db연결 필요
+        //메모 추가
         MemoAdapter memoAdapter = new MemoAdapter(this,memoList);
         memoListView.setAdapter(memoAdapter);
         findViewById(R.id.onClickAddMemo).setOnClickListener(new View.OnClickListener() {
@@ -225,7 +236,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 });
             }
         });
-        //메모장 메모 수정-db연결 필요
+        //메모장 메모 수정
         memoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -260,7 +271,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 });
             }
         });
-        //메모장 메모 삭제-db연결 필요
+        //메모장 메모 삭제
         memoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -318,12 +329,11 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 editTitleAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String title = editReName.getText().toString();
-                        TitleObject.setTitle(title);
+                        PlannerObject.setTitle(title);
                         setResult(1);
                         dialog.dismiss();
                         finish();
@@ -388,10 +398,14 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 deleteAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        memo = new String[memoList.size()];
+                        for(int i=0;i<memo.length;i++){
+                            memo[i]=memoList.get(i).getMemo();
+                        }
+                        PlannerObject.setMemo(memo);
                         setResult(3);
                         dialog.dismiss();
                         finish();
@@ -399,6 +413,8 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 });
             }
         });
+
+
     }
 
 }
