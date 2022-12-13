@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 if(result.getResultCode() == 1){
                     title = PlannerObject.getTitle();
                     context = searchDB.getResult(synchro(memoDB)[clickPosition]);
-                    if(searchDB.getFlag(clickPosition)==0) context[0] = "캠핑장소를 선택해 주세요";
-                    else plannerList.set(clickPosition, new PlannerInformation(title,context[0]));
+                    if(searchDB.getFlag(synchro(memoDB)[clickPosition])==0) context[0] = "캠핑장소를 선택해 주세요";
+                    plannerList.set(clickPosition, new PlannerInformation(title,context[0]));
                     healingAdapter.notifyDataSetChanged();
                 }
                 if(result.getResultCode() == 2){

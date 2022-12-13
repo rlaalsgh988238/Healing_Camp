@@ -41,8 +41,12 @@ public class DetailViewActivity extends AppCompatActivity {
 
         //선택 정보 가져오기
         result = getIntent().getStringArrayExtra("List");
+        String[] dbResult = getIntent().getStringArrayExtra("dbList");
         if(result==null){
             result = PlannerObject.getResult();
+        }
+        else if(result[0].equals("null")){
+            result = dbResult;
         }
         searchList = new SearchList(result);
         //상세 내용작성

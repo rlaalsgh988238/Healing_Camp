@@ -156,7 +156,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1&& flag[0] ==true){
                     campingPlace = PlannerObject.getResult();
-                    PlannerObject.setResult(null);
                     nameCampingPlace.setText(campingPlace[0]);
                     infoCampingPlace.setText(campingPlace[1]);
                     urlCampingPlace.setText(campingPlace[7]);
@@ -179,7 +178,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(InsidePlannerActivity.this,DetailViewActivity.class);
-                intent.putExtra("List",dbCampingPlace);
+                intent.putExtra("dbList",dbCampingPlace);
                 startActivity(intent);
             }
         });
@@ -233,6 +232,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         onClickBackLayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PlannerObject.setResult(null);
                 onBackPressed();
             }
         });
