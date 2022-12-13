@@ -61,6 +61,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        //또 다른 주석
         LocalDB memoDB = new LocalDB(this,1);
         SearchDB searchDB = new SearchDB(this,1);
         super.onCreate(savedInstanceState);
