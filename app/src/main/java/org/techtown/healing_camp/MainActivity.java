@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         LocalDB memoDB = new LocalDB(MainActivity.this,1);
         //기존의 메모장 개수 확인
         newMemoPosition +=memoDB.count();
+        System.out.println("dfdfdfdfdfd"+newMemoPosition);
+
         if(newMemoPosition!=0){
             for (int i=0;i<newMemoPosition;i++){
                 String title = memoDB.getTitle(i);

@@ -105,20 +105,27 @@ public class LocalDB extends SQLiteOpenHelper
         db.execSQL("DELETE FROM Memo WHERE NUM = " + num);
         db.close();
     }
+
     public int count(){
 
         SQLiteDatabase db = getReadableDatabase();
-        String sql = "SELECT count(*) FROM MEMO";
+
+        String sql="SELECT count(*) FROM MEMO";
         int count =0;
         String result = "";
 
         Cursor cursor = db.rawQuery(sql,null);
-
-        while (cursor.moveToNext()) {
-            result = cursor.getString(1);
+        try
+        {
+            while (cursor.moveToNext()) {
+                count = cursor.getInt(0);
+                System.out.println("sssssssssssssssssssssssssssss");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("fffffffffffffffffffffff");
         }
 
-        count= Integer.parseInt(result);
 
         return count;
     }
