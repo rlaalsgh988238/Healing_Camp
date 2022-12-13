@@ -1,9 +1,13 @@
 package org.techtown.healing_camp;
 
+import static android.icu.text.MessagePattern.ArgType.SELECT;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.io.Serializable;
 
 public class LocalDB extends SQLiteOpenHelper
 {
@@ -42,6 +46,13 @@ public class LocalDB extends SQLiteOpenHelper
         db.close();
     }
 
+    public void updateTitle(String title, int num) // 데이터 베이스 수정 , 인자로 수정된 제목과 내용, 그리고 그 인덱스 넘버 전달
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE Memo SET TITLE = '" + title + "' WHERE NUM = " + num);
+        db.close();
+    }
+
     public String getResult(int num) // DB값 얻는 메서드 , 인자로 인덱스 넘버 전달
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -60,10 +71,43 @@ public class LocalDB extends SQLiteOpenHelper
         return result;
     }
 
+    public String getTitle(int num){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql="SELECT * FROM Memo WHERE NUM = "+num;
+        Cursor cursor = db.rawQuery(sql,null);
+        String result = "";
+        while (cursor.moveToNext()) {
+            result = cursor.getString(0);
+        }
+
+        return result;
+    }
+
+    public String getContent(int num){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql="SELECT * FROM Memo WHERE NUM = "+num;
+        Cursor cursor = db.rawQuery(sql,null);
+        String result = "";
+        while (cursor.moveToNext()) {
+            result = cursor.getString(2);
+        }
+        return result;
+    }
+
     public void delete(int num)
     { // 값 삭제 , 인자로 인덱스 넘버
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM Memo WHERE NUM = " + num);
         db.close();
+    }
+    public int count(){
+        int index=0;
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM MEMO";
+        Cursor cursor = db.rawQuery(sql,null);
+        while (cursor.moveToNext()){
+            index++;
+        }
+        return index;
     }
 }

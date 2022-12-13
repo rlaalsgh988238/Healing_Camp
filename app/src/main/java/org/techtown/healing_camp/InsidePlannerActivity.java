@@ -23,6 +23,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -34,10 +35,10 @@ import java.util.ArrayList;
 public class InsidePlannerActivity  extends AppCompatActivity {
     ArrayList<Memo> memoList;
     String[] memo,campingPlace;
+    String stringMemo;
 
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
     EditText writeToSearch;
-    TextView test1;//메모 추가 다이얼로그
     Button addCancel,addAccept;
     EditText editAddMemo;
     ListView memoListView;
@@ -60,9 +61,11 @@ public class InsidePlannerActivity  extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        LocalDB memoDB = new LocalDB(this,1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inside_planner_layout);
         final boolean[] flag = {true};
+        int position = getIntent().getExtras().getInt("position");
 
         onClickEditPlanner = findViewById(R.id.onClickEditPlanner);
         onClickSearch = findViewById(R.id.onClickSearch);
@@ -72,8 +75,17 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         memoListView = findViewById(R.id.memoListView);
 
         memoList = new ArrayList<Memo>();
-        Intent intent = getIntent();
-        Intent intentToSearch = new Intent(InsidePlannerActivity.this,SearchCompleteActivity.class);
+
+        //기존에 있던 메모 출력
+        stringMemo = memoDB.getContent(position);
+        if(!stringMemo.equals("null")){
+            memo = stringMemo.split("@");
+            for(int i=0;i< memo.length;i++){
+                memoList.add(new Memo(memo[i]));
+            }
+        };
+
+        //기존에 있던 캠핑장소 출력
 
         // 버튼 애니메이션
         View view = findViewById(R.id.memoListView);
@@ -120,6 +132,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1&& flag[0] ==true){
                     campingPlace = PlannerObject.getResult();
+                    PlannerObject.setResult(null);
                     nameCampingPlace.setText(campingPlace[0]);
                     infoCampingPlace.setText(campingPlace[1]);
                     urlCampingPlace.setText(campingPlace[7]);
@@ -334,6 +347,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                     public void onClick(View view) {
                         String title = editReName.getText().toString();
                         PlannerObject.setTitle(title);
+                        memoDB.updateTitle(title,position);
                         setResult(1);
                         dialog.dismiss();
                         finish();
@@ -375,7 +389,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 });
             }
         });
-        //메모장 저장-db연결 필요
+        //메모장 저장
         findViewById(R.id.onClickSave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -392,20 +406,24 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
-                deleteCancel.setOnClickListener(new View.OnClickListener() {
+                saveCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
                     }
                 });
-                deleteAccept.setOnClickListener(new View.OnClickListener() {
+                saveAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         memo = new String[memoList.size()];
                         for(int i=0;i<memo.length;i++){
                             memo[i]=memoList.get(i).getMemo();
                         }
-                        PlannerObject.setMemo(memo);
+                        PlannerObject.setResult(campingPlace);
+                        //db에 저장해야 할 정보(타이틀, 선택한 캠핑장 정보, 메모 내용)
+                        stringMemo = makeString(memo);
+                        memoDB.update(PlannerObject.getTitle(),position,stringMemo);
+                        //campingPlace;
                         setResult(3);
                         dialog.dismiss();
                         finish();
@@ -414,7 +432,18 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
-
     }
-
+    
+    //@를 토큰으로 한줄로 만드는 함수
+    String makeString(String[] array){
+        String result="";
+        if (array.length==0) result = null;
+        else {
+            for(int i=0;i<array.length-1;i++){
+                result += (array[i]+"@");
+            }
+            result += array[array.length-1];
+        }
+        return result;
+    }
 }

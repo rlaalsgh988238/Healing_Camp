@@ -19,11 +19,6 @@ public class PlannerObject {
         return Title;
     }
 
-    //메모장 받기
-    public static void setMemo(String[] memo){Memo = memo;}
-    //메모장 건내주기
-    public static String[] getMemo(){return Memo;}
-
     //캠핑장 받기
     public static void setResult(String[] result){Result = result;}
     //캠핑장 보내주기

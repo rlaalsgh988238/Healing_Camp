@@ -54,6 +54,7 @@ public class HealingAdapter extends BaseAdapter {
         TextView date = view.findViewById(R.id.date);
 
         title.setText(plannerInformation.get(position).getTitle());
+        content.setText(plannerInformation.get(position).getContent());
         date.setText(plannerInformation.get(position).getDate());
         //애니메이션
         Animation popUpAnimation = AnimationUtils.loadAnimation(context, (position==0) ? R.anim.pop_up_animation : R.anim.non_animation);
