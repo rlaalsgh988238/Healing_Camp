@@ -457,7 +457,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                             searchDB.update(nullArray,position,0);
                         }
                         else searchDB.update(campingPlace,position,1);
-                        //campingPlace;
                         setResult(3);
                         dialog.dismiss();
                         finish();
