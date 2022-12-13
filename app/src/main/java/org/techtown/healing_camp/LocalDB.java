@@ -68,6 +68,8 @@ public class LocalDB extends SQLiteOpenHelper
                     + cursor.getString(2)
                     + "\n";
         }
+
+        db.close();
         return result;
     }
 
@@ -80,6 +82,7 @@ public class LocalDB extends SQLiteOpenHelper
             result = cursor.getString(0);
         }
 
+        db.close();
         return result;
     }
 
@@ -91,6 +94,8 @@ public class LocalDB extends SQLiteOpenHelper
         while (cursor.moveToNext()) {
             result = cursor.getString(2);
         }
+
+        db.close();
         return result;
     }
 
@@ -101,13 +106,20 @@ public class LocalDB extends SQLiteOpenHelper
         db.close();
     }
     public int count(){
-        int index=0;
+
         SQLiteDatabase db = getReadableDatabase();
-        String sql = "SELECT * FROM MEMO";
+        String sql = "SELECT count(*) FROM MEMO";
+        int count =0;
+        String result = "";
+
         Cursor cursor = db.rawQuery(sql,null);
-        while (cursor.moveToNext()){
-            index++;
+
+        while (cursor.moveToNext()) {
+            result = cursor.getString(1);
         }
-        return index;
+
+        count= Integer.parseInt(result);
+
+        return count;
     }
 }
