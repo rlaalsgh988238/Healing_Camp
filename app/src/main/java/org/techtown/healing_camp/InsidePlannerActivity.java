@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class InsidePlannerActivity  extends AppCompatActivity {
     ArrayList<Memo> memoList;
-    String[] memo,campingPlace;
+    String[] memo,campingPlace,dbCampingPlace;
     String stringMemo;
 
     Button onClickSearch,onClickEditPlanner,onClickBackLayer;
@@ -62,6 +62,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         LocalDB memoDB = new LocalDB(this,1);
+        SearchDB searchDB = new SearchDB(this,1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inside_planner_layout);
         final boolean[] flag = {true};
@@ -75,6 +76,22 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         memoListView = findViewById(R.id.memoListView);
 
         memoList = new ArrayList<Memo>();
+        String[] nullArray = new String[10];
+        for(int i = 0;i<10;i++){
+            nullArray[i]=null;
+        }
+
+        //캠핑장 요약 뷰 불러오기
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        LinearLayout showPickUpPlace = (LinearLayout)findViewById(R.id.showPickUpPlace);
+        View viewResultContainer = layoutInflater.inflate(R.layout.search_result_container_layout,showPickUpPlace,false);
+        //캠핑장 설명 객체 선언
+        TextView nameCampingPlace =  viewResultContainer.findViewById(R.id.nameCampingPlace);
+        TextView infoCampingPlace = viewResultContainer.findViewById(R.id.infoCampingPlace);
+        TextView urlCampingPlace = viewResultContainer.findViewById(R.id.urlCampingPlace);
+        TextView whereCampingPlace = viewResultContainer.findViewById(R.id.whereCampingPlace);
+        TextView telCampingPlace = viewResultContainer.findViewById(R.id.telCampingPlace);
+        ImageView imageView = viewResultContainer.findViewById(R.id.imageView);
 
         //기존에 있던 메모 출력
         stringMemo = memoDB.getContent(position);
@@ -86,6 +103,23 @@ public class InsidePlannerActivity  extends AppCompatActivity {
         };
 
         //기존에 있던 캠핑장소 출력
+        dbCampingPlace = searchDB.getResult(position);
+        //db에 저장된 캠핑장소가 있는지 확인하기 위한 플래그(있으면 1, 없으면 0)
+        int intFlag = searchDB.getFlag(position);
+        if (intFlag==1){
+            nameCampingPlace.setText(dbCampingPlace[0]);
+            infoCampingPlace.setText(dbCampingPlace[1]);
+            urlCampingPlace.setText(dbCampingPlace[7]);
+            whereCampingPlace.setText(dbCampingPlace[4]+" "+dbCampingPlace[5]);
+            telCampingPlace.setText(dbCampingPlace[6]);
+            Glide.with(viewResultContainer).load(dbCampingPlace[9])
+                    .centerCrop()
+                    .fallback(R.drawable.no_image)
+                    .into(imageView);
+            showPickUpPlace.addView(viewResultContainer);
+            campingPlace = dbCampingPlace;
+            flag[0] = false;
+        };
 
         // 버튼 애니메이션
         View view = findViewById(R.id.memoListView);
@@ -115,17 +149,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
-        //캠핑장 요약 뷰 불러오기
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        LinearLayout showPickUpPlace = (LinearLayout)findViewById(R.id.showPickUpPlace);
-        View viewResultContainer = layoutInflater.inflate(R.layout.search_result_container_layout,showPickUpPlace,false);
-        //캠핑장 설명 객체 선언
-        TextView nameCampingPlace =  viewResultContainer.findViewById(R.id.nameCampingPlace);
-        TextView infoCampingPlace = viewResultContainer.findViewById(R.id.infoCampingPlace);
-        TextView urlCampingPlace = viewResultContainer.findViewById(R.id.urlCampingPlace);
-        TextView whereCampingPlace = viewResultContainer.findViewById(R.id.whereCampingPlace);
-        TextView telCampingPlace = viewResultContainer.findViewById(R.id.telCampingPlace);
-        ImageView imageView = viewResultContainer.findViewById(R.id.imageView);
         //검색 이후 캠핑장 선택 결과 받기-db연결 필요
         ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -155,6 +178,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(InsidePlannerActivity.this,DetailViewActivity.class);
+                intent.putExtra("List",dbCampingPlace);
                 startActivity(intent);
             }
         });
@@ -242,6 +266,9 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String memo = editAddMemo.getText().toString();
+                        if(memo.equals("")){
+                            memo="메모를 작성해 주세요";
+                        }
                         memoList.add(new Memo(memo));
                         dialog.dismiss();
                         memoAdapter.notifyDataSetChanged();
@@ -277,6 +304,9 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String memo = editMemo.getText().toString();
+                        if(memo.equals("")){
+                            memo="메모를 작성해 주세요";
+                        }
                         memoList.set(position,new Memo(memo));
                         dialog.dismiss();
                         memoAdapter.notifyDataSetChanged();
@@ -422,7 +452,11 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                         PlannerObject.setResult(campingPlace);
                         //db에 저장해야 할 정보(타이틀, 선택한 캠핑장 정보, 메모 내용)
                         stringMemo = makeString(memo);
-                        memoDB.update(PlannerObject.getTitle(),position,stringMemo);
+                        memoDB.update(memoDB.getTitle(position),position,stringMemo);
+                        if(flag[0]==true){
+                            searchDB.update(nullArray,position,0);
+                        }
+                        else searchDB.update(campingPlace,position,1);
                         //campingPlace;
                         setResult(3);
                         dialog.dismiss();
