@@ -13,10 +13,8 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,13 +24,14 @@ public class MainActivity extends AppCompatActivity {
     ImageButton onClickMakePlanner;
     Button onClickTopScroll;
     ListView listView;
-    int newMemoPosition = 0 , index;
+    int index = 0 , clickPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //또 또 다른 주석
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LocalDB memoDB = new LocalDB(MainActivity.this,1);
+        SearchDB searchDB = new SearchDB(this,1);
         Intent intent = getIntent();
 
         ActivityResultLauncher<Intent> startActivityResult;
@@ -44,16 +43,15 @@ public class MainActivity extends AppCompatActivity {
 
         HealingAdapter healingAdapter = new HealingAdapter(this, plannerList);
         listView.setAdapter(healingAdapter);
-        LocalDB memoDB = new LocalDB(MainActivity.this,1);
-        //기존의 메모장 개수 확인
-        newMemoPosition +=memoDB.count();
-        System.out.println("dfdfdfdfdfd"+newMemoPosition);
-
-        if(newMemoPosition!=0){
-            for (int i=0;i<newMemoPosition;i++){
-                String title = memoDB.getTitle(i);
-                if(title.equals("null")) plannerList.add(0,new PlannerInformation("메모장 이름을 적성해 주세요","캠핑장소를 선택해 주세요"));
-                else plannerList.add(0,new PlannerInformation(title,"캠핑장소를 선택해 주세요"));
+        //기존의 메모장 확인
+        index = memoDB.count();
+        if(index !=0){
+            for (int i=0;i<memoDB.count();i++){
+                String title = memoDB.getTitle(synchro(memoDB)[i]);
+                context = searchDB.getResult(synchro(memoDB)[i]);
+                if(title.equals("null")) title = "메모장 이름을 작성해 주세요";
+                if(searchDB.getFlag(synchro(memoDB)[i])==0) context[0] = "캠핑장소를 선택해 주세요";
+                plannerList.add(new PlannerInformation(title,context[0]));
                 healingAdapter.notifyDataSetChanged();
             }
         }
@@ -64,54 +62,54 @@ public class MainActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == 1){
                     title = PlannerObject.getTitle();
-                    if(PlannerObject.getResult()==null) plannerList.set(index,new PlannerInformation(title,"캠핑장소를 선택해 주세요"));
-                    else plannerList.set(index, new PlannerInformation(title,context[0]));
+                    context = searchDB.getResult(synchro(memoDB)[clickPosition]);
+                    if(searchDB.getFlag(clickPosition)==0) context[0] = "캠핑장소를 선택해 주세요";
+                    else plannerList.set(clickPosition, new PlannerInformation(title,context[0]));
                     healingAdapter.notifyDataSetChanged();
                 }
                 if(result.getResultCode() == 2){
-                    plannerList.remove(index);
-                    deleteDB(memoDB,index);
-                    memoDB.delete(newMemoPosition);
-                    newMemoPosition--;
+                    deleteDB(memoDB, synchro(memoDB)[clickPosition]);
+                    plannerList.remove(clickPosition);
                     healingAdapter.notifyDataSetChanged();
+                    index--;
                 }
                 if(result.getResultCode() == 3){
-                    title = plannerList.get(index).title;
-                    context = PlannerObject.getResult();
-                    if(title==null) title = "메모장 이름을 적성해 주세요";
-                    if(context==null) plannerList.set(index, new PlannerInformation(title,"캠핑장소를 선택해 주세요"));
-                    else plannerList.set(index, new PlannerInformation(title,context[0]));
+                    title = memoDB.getTitle(synchro(memoDB)[clickPosition]);
+                    context = searchDB.getResult(synchro(memoDB)[clickPosition]);
+                    if(title.equals("null")) title = "메모장 이름을 작성해 주세요";
+                    if(searchDB.getFlag(synchro(memoDB)[clickPosition])==0) context[0]="캠핑장소를 선택해 주세요";
+                    plannerList.set(clickPosition, new PlannerInformation(title,context[0]));
                     //다른 메모장까지 영향을 줄 수 있기 때문에 초기화
                     PlannerObject.setResult(null);
                     healingAdapter.notifyDataSetChanged();
                 }
             }
         });
+
+        String[] nullArray = new String[10];
+        for(int i = 0;i<10;i++){
+            nullArray[i]=null;
+        }
+
         //메모장 추가
         onClickMakePlanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 plannerList.add(0,new PlannerInformation("메모장 이름을 적성해 주세요","캠핑장소를 선택해 주세요"));
-                memoDB.insert(null,newMemoPosition,null);
-                newMemoPosition++;
-                healingAdapter.notifyDataSetChanged();;
+                memoDB.insert(null, index,null);
+                searchDB.insert(nullArray, index,0);
+                healingAdapter.notifyDataSetChanged();
+                index++;
             }
         });
-        //버튼의 인덱스와 메모의 테이블 인덱스 일치화 작업
-        int dbSize = memoDB.count()-1;
-        int[] dbPosition = new int[memoDB.count()];
-        for(int i =0;i<memoDB.count();i++){
-            dbPosition[i]=dbSize;
-            dbSize--;
-        }
+
         //메모장 진입
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(MainActivity.this, InsidePlannerActivity.class);
-               //intent.putExtra("DB", (Serializable) memoDB);
-                intent.putExtra("position",dbPosition[position]);
-                index = position;
+                intent.putExtra("position", synchro(memoDB)[position]);
+                clickPosition = position;
                 startActivityResult.launch(intent);
             }
         });
@@ -143,12 +141,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     //DB 삭제 기능(삭제후 다음 db들 한칸 씩 앞으로)
     void deleteDB(LocalDB localDB, int index){
         localDB.delete(index);
         for(int i = index;i<plannerList.size();i++){
-            localDB.update(localDB.getTitle(i+1),i,localDB.getContent(i+1));
+            if(i==index){
+                localDB.insert(localDB.getTitle(i+1),i,localDB.getContent(i+1));
+            }
+            else localDB.update(localDB.getTitle(i+1),i,localDB.getContent(i+1));
         }
+        localDB.delete(plannerList.size()-1);
+    }
+
+    //버튼 인덱스와 메모 테이블 인덱스 일치화 메서드
+    int[] synchro(LocalDB localDB){
+        int dbSize = localDB.count()-1;
+        int[] dbPosition = new int[localDB.count()];
+        for(int i =0;i<localDB.count();i++){
+            dbPosition[i]=dbSize;
+            dbSize--;
+        }
+        return  dbPosition;
     }
 }

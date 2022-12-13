@@ -119,11 +119,9 @@ public class LocalDB extends SQLiteOpenHelper
         {
             while (cursor.moveToNext()) {
                 count = cursor.getInt(0);
-                System.out.println("sssssssssssssssssssssssssssss");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("fffffffffffffffffffffff");
         }
 
 
