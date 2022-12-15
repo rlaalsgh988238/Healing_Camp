@@ -68,7 +68,7 @@ public class SearchCompleteActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(SearchCompleteActivity.this,DetailViewActivity.class);
-                intent.putExtra("List",result[position]);
+                PlannerObject.setResult(result[position]);
                 startActivityResult.launch(intent);
             }
         });

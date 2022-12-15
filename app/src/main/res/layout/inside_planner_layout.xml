@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#00ff0000"
     android:divider="#ffffff">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
+        android:background="#00ff0000"
         android:orientation="horizontal">
 
         <Button
@@ -34,13 +36,15 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="#00ff0000"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/writeToSearch"
-            android:layout_width="290dp"
+            android:layout_width="250dp"
             android:layout_height="40sp"
             android:layout_margin="10sp"
             android:layout_gravity="center"
@@ -104,29 +108,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="30dp"
-            android:alpha="0.7"
             android:background="@drawable/round_box_for_edit"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            android:elevation="3dp">
 
             <Button
                 android:id="@+id/onClickAddMemo"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
                 android:text="메모 추가"/>
 
             <View
-                android:layout_width="140sp"
+                android:layout_width="130sp"
                 android:layout_height="5dp"
                 android:background="#01DFA5" />
 
             <Button
                 android:id="@+id/onClickTitleEdit"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
                 android:text="타이틀 수정" />
@@ -138,8 +142,8 @@
 
             <Button
                 android:id="@+id/onClickDelete"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
                 android:text="메모장 삭제"/>
@@ -151,8 +155,8 @@
 
             <Button
                 android:id="@+id/onClickSave"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
                 android:background="@drawable/ripple_effect"
                 android:stateListAnimator="@null"
                 android:text="메모장 저장"/>

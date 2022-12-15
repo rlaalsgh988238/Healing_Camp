@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:stateListAnimator="@null"
     android:animateLayoutChanges="true"
     android:background="#ffffff">
 
         <LinearLayout
-            android:layout_width="390dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="left|center"
             android:orientation="vertical"
@@ -17,11 +18,12 @@
             android:background="@drawable/round_box">
 
             <LinearLayout
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:orientation="vertical"
                 android:layout_gravity="center"
+                android:stateListAnimator="@null"
                 android:layout_weight="1">
 
                 <TextView
@@ -42,11 +44,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_gravity="center"
                 android:orientation="vertical"
+                android:stateListAnimator="@null"
                 android:layout_weight="1">
 
                 <TextView
@@ -67,11 +70,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_gravity="center"
                 android:orientation="vertical"
+                android:stateListAnimator="@null"
                 android:layout_weight="1">
 
                 <TextView

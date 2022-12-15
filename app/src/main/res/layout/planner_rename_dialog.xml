@@ -19,12 +19,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40sp"
                 android:text="바꿀 이름을 입력해 주세요"
-                android:textSize="25dp"/>
+                android:textSize="22dp"/>
 
             <EditText
                 android:id="@+id/editReName"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:hint="여기에 입력"/>
 
         </LinearLayout>

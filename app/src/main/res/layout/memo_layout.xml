@@ -35,6 +35,6 @@
         android:layout_height="1dp"
         android:layout_margin="15sp"
         android:background="#A4A4A4"
-        android:elevation="5sp"/>
+        android:elevation="3sp"/>
 
 </LinearLayout>

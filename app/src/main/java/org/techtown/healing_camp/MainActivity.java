@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     healingAdapter.notifyDataSetChanged();
                 }
                 if(result.getResultCode() == 2){
-                    deleteDB(memoDB, synchro(memoDB)[clickPosition]);
+                    int sycPosition = synchro(memoDB)[clickPosition]+1;
+                    deleteDB(memoDB, sycPosition);
+                    deleteDB(searchDB,sycPosition);
                     plannerList.remove(clickPosition);
                     healingAdapter.notifyDataSetChanged();
                     index--;
@@ -143,15 +145,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //DB 삭제 기능(삭제후 다음 db들 한칸 씩 앞으로)
-    void deleteDB(LocalDB localDB, int index){
-        localDB.delete(index);
-        for(int i = index;i<plannerList.size();i++){
-            if(i==index){
-                localDB.insert(localDB.getTitle(i+1),i,localDB.getContent(i+1));
+    void deleteDB(LocalDB localDB, int index) {
+        if (plannerList.size() == 1) {
+            localDB.delete(0);
+        } else {
+            localDB.delete(index);
+            for (int i = index; i < plannerList.size(); i++) {
+                if (i == index) {
+                    localDB.insert(localDB.getTitle(i + 1), i, localDB.getContent(i + 1));
+                } else localDB.update(localDB.getTitle(i + 1), i, localDB.getContent(i + 1));
             }
-            else localDB.update(localDB.getTitle(i+1),i,localDB.getContent(i+1));
+            localDB.delete(plannerList.size() - 1);
         }
-        localDB.delete(plannerList.size()-1);
+    }
+
+    void deleteDB(SearchDB searchDB, int index){
+        if(plannerList.size() == 1){
+            searchDB.delete(0);
+        } else {
+            searchDB.delete(index);
+            for(int i = index;i<plannerList.size();i++){
+                if(i==index){
+                searchDB.insert(searchDB.getResult(i+1),i,searchDB.getFlag(i+1));
+            }
+            else searchDB.update(searchDB.getResult(i+1),i,searchDB.getFlag(i+1));
+        }
+        searchDB.delete(plannerList.size()-1);
+    }
     }
 
     //버튼 인덱스와 메모 테이블 인덱스 일치화 메서드

@@ -19,11 +19,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40sp"
                 android:text="새로 작성할 내용을 입력해 주세요"
-                android:textSize="25dp"/>
+                android:textSize="22dp"/>
 
             <EditText
                 android:id="@+id/editMemo"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:hint="여기에 입력"/>
 

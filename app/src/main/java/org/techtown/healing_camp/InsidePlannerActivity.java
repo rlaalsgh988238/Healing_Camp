@@ -150,7 +150,7 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
 
-        //검색 이후 캠핑장 선택 결과 받기-db연결 필요
+        //검색 이후 캠핑장 선택 결과 받기
         ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -174,12 +174,12 @@ public class InsidePlannerActivity  extends AppCompatActivity {
             }
         });
         //캠핑장소 자제히 보기(클릭)
+        Intent intentToDetailView = new Intent(InsidePlannerActivity.this,DetailViewActivity.class);
+        intentToDetailView.putExtra("position",position);
         showPickUpPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InsidePlannerActivity.this,DetailViewActivity.class);
-                intent.putExtra("dbList",dbCampingPlace);
-                startActivity(intent);
+                startActivity(intentToDetailView);
             }
         });
         //캠핑장소 삭제
@@ -409,7 +409,6 @@ public class InsidePlannerActivity  extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 deleteAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
